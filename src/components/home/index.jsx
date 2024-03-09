@@ -3,6 +3,7 @@ import { NavBar } from "../navBar"
 import { useContext } from "react"
 import { ThemeContext } from "../../contexts/themeContext"
 import { PokemonList } from "../pokemonList"
+import { Lists } from "../lists"
 
 export const Home = () => {
     const {theme} = useContext(ThemeContext);
@@ -14,7 +15,7 @@ export const Home = () => {
             }}
         >
             <NavBar />
-            <PokemonList />
+            <Lists />
         </Container>
     )
 }

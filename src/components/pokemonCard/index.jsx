@@ -3,14 +3,16 @@ import styled from "styled-components"
 import { ThemeContext } from "../../contexts/themeContext"
 import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlus, faRotateLeft } from "@fortawesome/free-solid-svg-icons"
+import { faMagnifyingGlass, faPlus, faRotateLeft } from "@fortawesome/free-solid-svg-icons"
 import { typesData } from "../pokemonTypes"
+import pokeballIcon from "../../images/pokeball-icon.png"
 
 export const PokemonCard = ({ data }) => {
     const { theme } = useContext(ThemeContext);
     const [pokemon, setPokemon] = useState(null);
     const [frontImage, setFrontImage] = useState(true)
     const cardColor = typesData.find((typeData) => typeData.type === pokemon?.types[0].type.name)?.color;
+    const backImage = pokemon?.sprites.back_default;
 
     const getPokemonData = () => {
         const response = axios
@@ -41,21 +43,31 @@ export const PokemonCard = ({ data }) => {
             }}>
             {pokemon &&
                 <>
-                    <button
-                        className="rotate"
-                        style={{ color: theme.color }}
-                        onClick={() => rotatePokemon()}
-                    >
-                        <FontAwesomeIcon icon={faRotateLeft} />
-                    </button>
+                    {backImage &&
+                        <button
+                            className="rotate"
+                            style={{ color: theme.color }}
+                            onClick={() => rotatePokemon()}
+                        >
+                            <FontAwesomeIcon icon={faRotateLeft} />
+                        </button>
+                    }
+
                     <div className="image">
-                        <img
-                            src={
-                                frontImage
-                                    ? pokemon.sprites.front_default
-                                    : pokemon.sprites.back_default
-                            }
-                            alt={`Pokemon ${pokemon.name}`} />
+                        {pokemon.sprites.front_default
+                            ? <img
+                                src={
+                                    frontImage
+                                        ? pokemon.sprites.front_default
+                                        : (backImage ? backImage : pokemon.sprites.front_default)
+                                }
+                                alt={`Pokemon ${pokemon.name}`} />
+                            : <div className="pokemonImageNotFound">
+                                <img src={pokeballIcon} alt={`Pokemon ${pokemon.name} not found`} />
+                                <p>Image not found <FontAwesomeIcon icon={faMagnifyingGlass} /></p>
+                            </div>
+                        }
+
                     </div>
                     <h3 className="name">{pokemon.name} <span className="id">#{pokemon.id}</span></h3>
 
@@ -126,6 +138,17 @@ const Container = styled.div`
 
     .image {
         transition: .3s;
+
+        .pokemonImageNotFound {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px; 
+
+            img {
+                width: 50%;
+            }
+        }
     }
 
     .name {

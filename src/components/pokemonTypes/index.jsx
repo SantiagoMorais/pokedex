@@ -44,7 +44,9 @@ export const PokemonTypes = () => {
         <Icons>
             {typesData.map((data, index) => {
                 return (
-                    <button className='typeButton' key={index}>
+                    <button
+                        className='typeButton'
+                        key={index}>
                         <img
                             src={data.icon}
                             style={{ color: data.color }}

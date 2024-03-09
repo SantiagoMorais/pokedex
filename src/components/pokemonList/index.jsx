@@ -6,6 +6,7 @@ import { faPaw, faPlus, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ThemeContext } from "../../contexts/themeContext";
 import { ShowMoreButtons } from "../showMoreButtons";
+import axios from "axios";
 
 export const PokemonList = () => {
     const [pokemons, setPokemons] = useState([])

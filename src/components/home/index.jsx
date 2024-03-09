@@ -25,4 +25,5 @@ const Container = styled.section`
     align-items: center;
     min-height: 100vh;
     transition: background-color .3s;
+    padding: 20px;
 `

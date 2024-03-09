@@ -42,6 +42,7 @@ const Container = styled.section`
     padding: 20px 40px;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px;
 
     .pokemonLogo {
         height: 60px;

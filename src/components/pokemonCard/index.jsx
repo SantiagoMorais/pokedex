@@ -49,9 +49,16 @@ export const PokemonCard = ({ data }) => {
                         <FontAwesomeIcon icon={faRotateLeft} />
                     </button>
                     <div className="image">
-                        <img src={frontImage ? pokemon.sprites.front_default : pokemon.sprites.back_default} alt={`Pokemon ${pokemon.name}`} />
+                        <img
+                            src={
+                                frontImage
+                                    ? pokemon.sprites.front_default
+                                    : pokemon.sprites.back_default
+                            }
+                            alt={`Pokemon ${pokemon.name}`} />
                     </div>
-                    <h3 className="name">{pokemon.name}</h3>
+                    <h3 className="name">{pokemon.name} <span className="id">#{pokemon.id}</span></h3>
+
                     <div className="types">
                         {pokemon.types.map((type, index) => {
                             const typeName = type.type.name;
@@ -98,6 +105,7 @@ const Container = styled.div`
     align-items: center;
     padding: 15px;
     gap: 5px;
+    position: relative;
 
     .rotate {
         border-radius: 50%;
@@ -122,6 +130,13 @@ const Container = styled.div`
 
     .name {
         text-transform: capitalize;
+        text-align: center;
+    }
+
+    .id {
+        opacity: .5;
+        font-weight: 600;
+        font-size: 14px;
     }
 
     .types {
@@ -159,6 +174,31 @@ const Container = styled.div`
         &:hover {
             opacity: 1;
             box-shadow: 0 0 5px;
+        }
+    }
+
+    @media(max-width: 460px) {
+        width: 135px;
+        padding: 10px;
+
+        .name {
+            font-size: 16px;
+        }
+
+        .types {
+            font-size: 14px;
+            .type {
+                padding: 2px;
+            }
+        }
+
+        .measures {
+            padding: 0;
+            font-size: 14px;
+        }
+
+        .moreDetails {
+            font-size: 12px;
         }
     }
 `

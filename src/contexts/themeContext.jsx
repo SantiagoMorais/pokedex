@@ -1,5 +1,4 @@
 import { createContext, useState } from "react"
-import backgroundImage from "../images/background.jpg"
 import darkIcon from "../images/lunatoneIcon.png"
 import lightIcon from "../images/solrockIcon.png"
 

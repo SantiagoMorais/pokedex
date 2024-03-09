@@ -178,7 +178,7 @@ const Container = styled.div`
     }
 
     @media(max-width: 460px) {
-        width: 135px;
+        width: 150px;
         padding: 10px;
 
         .name {

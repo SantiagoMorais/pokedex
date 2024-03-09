@@ -26,4 +26,8 @@ const Container = styled.section`
     min-height: 100vh;
     transition: background-color .3s;
     padding: 20px;
+
+    @media(max-width: 460px) {
+        padding: 10px;
+    }
 `

@@ -2,24 +2,26 @@ import { useContext, useEffect, useState } from "react";
 import { fetchPokemon } from "../../services/fetchPokemon"
 import styled from "styled-components";
 import { PokemonCard } from "../pokemonCard";
-import { faPaw, faPlus, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ThemeContext } from "../../contexts/themeContext";
 import { ShowMoreButtons } from "../showMoreButtons";
 import axios from "axios";
+import { PokemonListsContext } from "../../contexts/pokemonListsContext";
 
 export const PokemonList = () => {
-    const [pokemons, setPokemons] = useState([])
+    const {defaultList, setDefaultList} = useContext(PokemonListsContext)
     const [listSize, setListSize] = useState(10);
     const [offset, setOffset] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
+    const {theme} = useContext(ThemeContext)
 
     const getPokemons = async () => {
         const response = await fetchPokemon(listSize, offset);
         const newPokemons = response.results;
 
         //The code below checks if the getPokemons function is being called twice, then it's duplicating the pokemon state data.
-        setPokemons(prevPokemons => {
+        setDefaultList(prevPokemons => {
             const updatedPokemons = [...prevPokemons];
             newPokemons.forEach(newPokemon => {
                 !updatedPokemons.some(pokemon => pokemon.url === newPokemon.url)
@@ -32,7 +34,7 @@ export const PokemonList = () => {
     }
 
     const loadMorePokemons = async (pokemonsNumber) => {
-        setOffset(prevValue => prevValue + listSize);
+        setOffset(defaultList.length);
         setListSize(pokemonsNumber);
         setIsLoading(true);
     }
@@ -44,9 +46,9 @@ export const PokemonList = () => {
     return (
         <Container>
             <div className="pokemons">
-                {pokemons &&
+                {defaultList &&
                     <>
-                        {pokemons.map((pokemon, index) =>
+                        {defaultList.map((pokemon, index) =>
                             <PokemonCard key={index} data={pokemon.url} />
                         )}
                     </>
@@ -55,7 +57,7 @@ export const PokemonList = () => {
             {isLoading
                 ? (
                     <>
-                        <p>Loading <FontAwesomeIcon icon={faSpinner} spin/></p>
+                        <p style={{color: theme.color}}>Loading <FontAwesomeIcon icon={faSpinner} spin/></p>
                     </>
                 )
                 : <ShowMoreButtons

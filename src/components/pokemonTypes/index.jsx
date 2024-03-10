@@ -17,6 +17,9 @@ import psychicType from '../../images/typeIcons/Pokemon_Type_Icon_Psychic.png'
 import rockType from '../../images/typeIcons/Pokemon_Type_Icon_Rock.png'
 import steelType from '../../images/typeIcons/Pokemon_Type_Icon_Steel.png'
 import waterType from '../../images/typeIcons/Pokemon_Type_Icon_Water.png'
+import { useContext, useEffect, useState } from 'react'
+import { PokemonListsContext } from '../../contexts/pokemonListsContext'
+import axios from 'axios'
 
 export const typesData = [
     { type: "bug", icon: bugType, color: '#90C12C' },
@@ -40,13 +43,40 @@ export const typesData = [
 ]
 
 export const PokemonTypes = () => {
+    const {setTypeList, currentType, setCurrentType} = useContext(PokemonListsContext)
+
+    const handleCurrentType = (type) => {
+        if (type !== currentType) {
+            setTypeList([]);
+            setCurrentType(type);
+        }
+    }
+
+    const getPokemonsByType = (type) => {
+        axios
+            .get(`https://pokeapi.co/api/v2/type/${type}/`)
+            .then((res) => {
+                const results = res.data.pokemon;
+                setTypeList(results);
+            })
+            .catch((err) => {
+                throw new Error(`Failed to fetch data from poke api: ${err}`)
+            })
+    }
+
+    useEffect(() => {
+        currentType ? getPokemonsByType(currentType) : ''
+    }, [currentType])
+
     return (
         <Icons>
             {typesData.map((data, index) => {
                 return (
                     <button
                         className='typeButton'
-                        key={index}>
+                        key={index}
+                        onClick={() => handleCurrentType(data.type)}
+                        >
                         <img
                             src={data.icon}
                             style={{ color: data.color }}
@@ -86,18 +116,3 @@ const Icons = styled.div`
     }
 }
 `
-
-const App = () => {
-    return (
-        <>
-            <form onSubmit={handleSubmit((data) => console.log(data))}>
-                <input {...register('firstName')} />
-                <input {...register('lastName', { required: true })} />
-                {errors.lastName && <p>Last name is required.</p>}
-                <input {...register('age', { pattern: /\d+/ })} />
-                {errors.age && <p>Please enter number for age.</p>}
-                <input type="submit" />
-            </form>
-        </>
-    )
-}

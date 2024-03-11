@@ -1,19 +1,16 @@
 import styled from "styled-components"
 import { NavBar } from "../navBar"
 import { useContext } from "react"
-import { ThemeContext } from "../../contexts/themeContext"
+import { ThemeContext } from "../../../contexts/themeContext"
 import { Lists } from "../lists"
-import { PokemonListsProvider } from "../../contexts/pokemonListsContext"
 
 export const Home = () => {
     const { theme } = useContext(ThemeContext);
 
     return (
         <Container style={{backgroundColor: theme.secondaryColor,}}>
-            <PokemonListsProvider>
                 <NavBar />
                 <Lists />
-            </PokemonListsProvider>
         </Container>
     )
 }

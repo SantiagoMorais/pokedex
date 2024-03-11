@@ -1,12 +1,10 @@
-import axios from "axios"
-import { typesData } from "../pokemonTypes"
-import { useContext, useEffect, useState } from "react"
+import { useContext } from "react"
 import { PokemonCard } from "../pokemonCard"
 import styled from "styled-components"
-import { PokemonListsContext } from "../../contexts/pokemonListsContext"
+import { PokemonListsContext } from "../../../contexts/pokemonListsContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faX } from "@fortawesome/free-solid-svg-icons"
-import { ThemeContext } from "../../contexts/themeContext"
+import { faUndoAlt, faX } from "@fortawesome/free-solid-svg-icons"
+import { ThemeContext } from "../../../contexts/themeContext"
 
 export const PokemonListByType = () => {
     const { typeList, setTypeList, setCurrentType } = useContext(PokemonListsContext)
@@ -26,7 +24,7 @@ export const PokemonListByType = () => {
                             <button
                                 style={{ color: theme.color }}
                                 onClick={() => handleReturnList()} 
-                            ><FontAwesomeIcon icon={faX} /></button>
+                            ><FontAwesomeIcon icon={faUndoAlt} /></button>
                             <p>Return</p>
                         </div>
                         {typeList.map((pokemon, index) =>
@@ -55,12 +53,13 @@ const Container = styled.section`
         align-items: center;
 
         button {
-            padding: 10px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             cursor: pointer;
             border: 1px solid transparent;
             background: none;
-            font-size: 20px;
+            font-size: 18px;
             opacity: .6;
             transition: .3s;
 
@@ -84,7 +83,7 @@ const Container = styled.section`
 
     .pokemons {
         padding: 20px 0;
-        max-width: 640px;
+
         display: flex;
         flex-wrap: wrap;
         gap: 20px;

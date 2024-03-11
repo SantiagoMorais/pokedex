@@ -6,6 +6,7 @@ export const PokemonListsProvider = (props) => {
     const [typeList, setTypeList] = useState([])
     const [currentType, setCurrentType] = useState('');
     const [defaultList, setDefaultList] = useState([]);
+    const [searchedPokemon, setSearchedPokemon] = useState('');
 
     return (
         <PokemonListsContext.Provider
@@ -16,6 +17,8 @@ export const PokemonListsProvider = (props) => {
                 setCurrentType,
                 defaultList,
                 setDefaultList,
+                searchedPokemon,
+                setSearchedPokemon
             }}>
             {props.children}
         </PokemonListsContext.Provider>

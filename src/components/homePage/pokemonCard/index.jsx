@@ -1,18 +1,24 @@
 import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
-import { ThemeContext } from "../../contexts/themeContext"
+import { ThemeContext } from "../../../contexts/themeContext"
 import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass, faPlus, faRotateLeft } from "@fortawesome/free-solid-svg-icons"
 import { typesData } from "../pokemonTypes"
-import pokeballIcon from "../../images/pokeball-icon.png"
+import pokeballIcon from "../../../images/pokeball-icon.png"
+import { Link } from "react-router-dom"
 
 export const PokemonCard = ({ data }) => {
     const { theme } = useContext(ThemeContext);
     const [pokemon, setPokemon] = useState(null);
     const [frontImage, setFrontImage] = useState(true)
+    const [isHovered, setIsHovered] = useState(false)
     const cardColor = typesData.find((typeData) => typeData.type === pokemon?.types[0].type.name)?.color;
     const backImage = pokemon?.sprites.back_default;
+
+    const rotatePokemon = () => {
+        frontImage ? setFrontImage(false) : setFrontImage(true);
+    }
 
     const getPokemonData = () => {
         const response = axios
@@ -31,18 +37,23 @@ export const PokemonCard = ({ data }) => {
         getPokemonData();
     }, [])
 
-    const rotatePokemon = () => {
-        frontImage ? setFrontImage(false) : setFrontImage(true);
+    const hoverStyle = {
+        boxShadow: `0 0 15px ${cardColor}`
+    }
+
+    const baseStyle = {
+        color: theme.color,
+        background: `linear-gradient(0deg, ${cardColor} 0%, ${theme.secondaryColor} 90%)`,
+        border: `1px solid ${cardColor}`,
+        transition: `.3s`
     }
 
     return (
         <Container
-            style={{
-                color: theme.color,
-                background: `linear-gradient(0deg, ${cardColor} 0%, ${theme.secondaryColor} 90%)`,
-            }}>
-            {pokemon &&
-                <>
+            style={ isHovered ? {...baseStyle, ...hoverStyle} : baseStyle}
+            onMouseEnter={() => {setIsHovered(true)}}
+            onMouseLeave={() => {setIsHovered(false)}}
+            >
                     {backImage &&
                         <button
                             className="rotate"
@@ -54,25 +65,25 @@ export const PokemonCard = ({ data }) => {
                     }
 
                     <div className="image">
-                        {pokemon.sprites.front_default
+                        {pokemon?.sprites.front_default
                             ? <img
                                 src={
                                     frontImage
-                                        ? pokemon.sprites.front_default
-                                        : (backImage ? backImage : pokemon.sprites.front_default)
+                                        ? pokemon?.sprites.front_default
+                                        : (backImage ? backImage : pokemon?.sprites.front_default)
                                 }
-                                alt={`Pokemon ${pokemon.name}`} />
+                                alt={`Pokemon ${pokemon?.name}`} />
                             : <div className="pokemonImageNotFound">
-                                <img src={pokeballIcon} alt={`Pokemon ${pokemon.name} not found`} />
+                                <img src={pokeballIcon} alt={`Pokemon ${pokemon?.name} not found`} />
                                 <p>Image not found <FontAwesomeIcon icon={faMagnifyingGlass} /></p>
                             </div>
                         }
 
                     </div>
-                    <h3 className="name">{pokemon.name} <span className="id">#{pokemon.id}</span></h3>
+                    <h3 className="name">{pokemon?.name} <span className="id">#{pokemon?.id}</span></h3>
 
                     <div className="types">
-                        {pokemon.types.map((type, index) => {
+                        {pokemon?.types.map((type, index) => {
                             const typeName = type.type.name;
                             const typeColor = typesData.find((typeData) => typeData.type === typeName)?.color;
                             return (
@@ -85,13 +96,14 @@ export const PokemonCard = ({ data }) => {
                     <div className="measures">
                         <div className="height">
                             <p>Height:</p>
-                            <p>{pokemon.height / 10}m</p>
+                            <p>{pokemon?.height / 10}m</p>
                         </div>
                         <div className="weight">
                             <p>Weight:</p>
-                            <p>{pokemon.weight / 10}kg</p>
+                            <p>{pokemon?.weight / 10}kg</p>
                         </div>
                     </div>
+                    <Link to={`/pokemon/${pokemon?.name}`}>
                     <button
                         style={{
                             color: theme.color,
@@ -102,21 +114,21 @@ export const PokemonCard = ({ data }) => {
                     >
                         More details <FontAwesomeIcon icon={faPlus} />
                     </button>
-                </>
-            }
+                    </Link>
         </Container>
     )
 }
 
 const Container = styled.div`
     width: 200px;
+    min-height: 340px;
     border-radius: 8px;
     border: 1px solid;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     padding: 15px;
-    gap: 5px;
     position: relative;
 
     .rotate {
@@ -202,6 +214,7 @@ const Container = styled.div`
 
     @media(max-width: 460px) {
         width: 150px;
+        min-height: 300px;
         padding: 10px;
 
         .name {

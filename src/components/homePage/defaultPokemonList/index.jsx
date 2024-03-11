@@ -1,15 +1,14 @@
 import { useContext, useEffect, useState } from "react";
-import { fetchPokemon } from "../../services/fetchPokemon"
+import { fetchPokemon } from "../../../services/fetchPokemon"
 import styled from "styled-components";
 import { PokemonCard } from "../pokemonCard";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ThemeContext } from "../../contexts/themeContext";
+import { ThemeContext } from "../../../contexts/themeContext";
 import { ShowMoreButtons } from "../showMoreButtons";
-import axios from "axios";
-import { PokemonListsContext } from "../../contexts/pokemonListsContext";
+import { PokemonListsContext } from "../../../contexts/pokemonListsContext";
 
-export const PokemonList = () => {
+export const DefaultPokemonList = () => {
     const {defaultList, setDefaultList} = useContext(PokemonListsContext)
     const [listSize, setListSize] = useState(10);
     const [offset, setOffset] = useState(0);
@@ -80,8 +79,8 @@ const Container = styled.section`
     justify-content: center;
 
     .pokemons {
+        
         padding: 20px 0;
-        max-width: 640px;
         display: flex;
         flex-wrap: wrap;
         gap: 20px;

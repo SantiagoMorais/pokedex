@@ -9,7 +9,6 @@ export const ThemeTogglerButton = () => {
     const changeTheme = () => {
         theme === themes.light ? setTheme(themes.dark) : setTheme(themes.light);
     }
-    const changeImage = theme === themes.dark ? { left: "-25px", transform: "scaleX(-1)" } : { left: "0px" }
 
     return (
         <>
@@ -22,7 +21,7 @@ export const ThemeTogglerButton = () => {
                     <img
                         src={theme.icon}
                         alt="themeIcon"
-                        style={changeImage}
+                        style={theme.themeTogglerButtonStyle}
                         className="themeIcon"
                     />
                     <div className="bar"></div>

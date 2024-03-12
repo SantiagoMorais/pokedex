@@ -7,7 +7,7 @@ import { faMoon, faSun } from "@fortawesome/free-regular-svg-icons"
 export const ThemeTogglerButton = () => {
     const { theme, setTheme } = useContext(ThemeContext)
     const changeTheme = () => {
-        theme === themes.light ? setTheme(themes.dark) : setTheme(themes.light);
+        theme.color === themes.light.color ? setTheme(themes.dark) : setTheme(themes.light);
     }
 
     return (

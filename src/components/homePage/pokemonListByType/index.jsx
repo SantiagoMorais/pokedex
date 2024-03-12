@@ -5,10 +5,13 @@ import { PokemonListsContext } from "../../../contexts/pokemonListsContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUndoAlt, faX } from "@fortawesome/free-solid-svg-icons"
 import { ThemeContext } from "../../../contexts/themeContext"
+import { typesData } from "../pokemonTypes"
 
 export const PokemonListByType = () => {
-    const { typeList, setTypeList, setCurrentType } = useContext(PokemonListsContext)
+    const { typeList, setTypeList, setCurrentType, currentType } = useContext(PokemonListsContext)
     const { theme } = useContext(ThemeContext)
+    const icon = typesData.find(type => type.type === currentType)?.icon;
+    const color = typesData.find(type => type.type === currentType)?.color
 
     const handleReturnList = () => {
         setTypeList([]);
@@ -16,17 +19,29 @@ export const PokemonListByType = () => {
     }
 
     return (
-        <Container>
+        <Container style={{ color: theme.color }}>
             <div className="pokemons">
+                <h2 className="typeTitle">
+                    <img
+                        src={icon}
+                        alt={`${currentType} icon`}
+                        className="icon"
+                        style={{
+                            filter: `drop-shadow(0 0 10px ${color})`
+                        }}
+                    />
+                    {currentType}
+                </h2>
                 {typeList.length > 0 &&
                     <>
-                        <div className="return" style={{ color: theme.color }}>
-                            <button
-                                style={{ color: theme.color }}
-                                onClick={() => handleReturnList()} 
-                            ><FontAwesomeIcon icon={faUndoAlt} /></button>
-                            <p>Return</p>
-                        </div>
+                        <button
+                            className="return" style={{ color: theme.color }}
+                            onClick={() => handleReturnList()}
+                        >
+                            <FontAwesomeIcon icon={faUndoAlt} />
+                            <p className="returnText">Return</p>
+                        </button>
+
                         {typeList.map((pokemon, index) =>
                             <PokemonCard key={index} data={pokemon.pokemon.url} />
                         )}
@@ -46,38 +61,47 @@ const Container = styled.section`
     align-items: center;
     justify-content: center;
 
+    .typeTitle {
+        text-transform: capitalize;
+        transition: .3s;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+        justify-content: center;
+
+        .icon {
+            height: 50px;
+            transition: 1s;
+        }
+    }
+
     .return {
         display: flex;
-        flex-direction: column;
-        width: 100%;
+        gap: 5px;
         align-items: center;
+        font-size: 14px;
+        position: absolute;
+        right: 20px;
+        top: 25px;
+        padding: 5px;
+        cursor: pointer;
+        opacity: .6;
+        transition: .3s;
+        background: none;
+        border: 1px solid transparent;
+        border-radius: 8px;
 
-        button {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 1px solid transparent;
-            background: none;
-            font-size: 18px;
-            opacity: .6;
-            transition: .3s;
-
-            &:hover {
-                box-shadow: 0 0 10px;
-                border: 1px solid;
-                opacity: 1;
-            }
-
-            &:hover + p {
-                opacity: 1;
-            }
+        &:hover {
+            box-shadow: 0 0 5px;
+            border: 1px solid;
+            opacity: 1;
         }
+    }
 
-        p {
+        .returnText {
             transition: .3s;
             font-weight: 600;
-            opacity: .6;
         }
     }
 

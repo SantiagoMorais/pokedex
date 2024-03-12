@@ -19,7 +19,7 @@ import steelType from '../../../images/typeIcons/Pokemon_Type_Icon_Steel.png'
 import waterType from '../../../images/typeIcons/Pokemon_Type_Icon_Water.png'
 import { useContext, useEffect, useState } from 'react'
 import { PokemonListsContext } from '../../../contexts/pokemonListsContext'
-import axios from 'axios'
+import { fetchPokemonByType } from '../../../services/fetchPokemonByType'
 
 export const typesData = [
     { type: "bug", icon: bugType, color: '#90C12C' },
@@ -52,16 +52,10 @@ export const PokemonTypes = () => {
         }
     }
 
-    const getPokemonsByType = (type) => {
-        axios
-            .get(`https://pokeapi.co/api/v2/type/${type}/`)
-            .then((res) => {
-                const results = res.data.pokemon;
-                setTypeList(results);
-            })
-            .catch((err) => {
-                throw new Error(`Failed to fetch data from poke api: ${err}`)
-            })
+    const getPokemonsByType = async (type) => {
+        const res = await fetchPokemonByType(type)
+        const pokemonList = res.pokemon;
+        setTypeList(pokemonList);
     }
 
     useEffect(() => {

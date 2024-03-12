@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react"
 import { PokemonListsContext } from "../../../contexts/pokemonListsContext"
-import axios from "axios";
 import { PokemonCard } from "../pokemonCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faX } from "@fortawesome/free-solid-svg-icons";
 import { ThemeContext } from "../../../contexts/themeContext";
 import styled from "styled-components";
+import { fetchPokemonByName } from "../../../services/fetchPokemonByName";
 
 export const PokemonFound = () => {
-    const { searchedPokemon, setSearchedPokemon } = useContext(PokemonListsContext);
+    const { searchedPokemon } = useContext(PokemonListsContext);
     const [pokemon, setPokemon] = useState(null);
     const { theme } = useContext(ThemeContext);
     const [itsLoading, setItsLoading] = useState(false);
@@ -19,39 +19,24 @@ export const PokemonFound = () => {
         setPokemonNotFound(false);
     }
 
-    const getPokemon = () => {
-        const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${searchedPokemon}/`.replace(/,/g, '');
-        console.log(pokemonUrl);
-        const response = () => {
-            setItsLoading(true);
-            axios
-                .get(pokemonUrl)
-                .then(() => {
-                    setPokemon(pokemonUrl);
-                    setPokemonNotFound(false);
-                })
-                .catch(() => {
-                    setPokemonNotFound(true);
-                    console.log('entrou no ".catch" do axios, identificou um erro');
-                })
-                .finally(() => {
-                    setItsLoading(false)
-                })
-        }
-        if (pokemon) {
-            setPokemon(null)
-            response()
+    const getPokemon = async (nameOrId) => {
+        setItsLoading(true)
+        const { data, error } = await fetchPokemonByName(nameOrId)
+        if (error) {
+            setPokemonNotFound(true);
         } else {
-            response()
+            setPokemon(data);
+            setPokemonNotFound(false);
         }
+        setItsLoading(false)
     }
 
     useEffect(() => {
-        getPokemon();
+        getPokemon(searchedPokemon);
     }, [searchedPokemon])
 
     return (
-        <Container>
+        <Container style={{color: theme.color}}>
             {itsLoading === true &&
                 <p style={{ color: theme.color }}>Loading <FontAwesomeIcon icon={faSpinner} spin /></p>
             }
@@ -80,7 +65,7 @@ export const PokemonFound = () => {
                             >
                                 <FontAwesomeIcon icon={faX} />
                             </button>
-                            <PokemonCard className="pokemonCard" data={pokemon} />
+                            <PokemonCard className="pokemonCard" pokemonData={pokemon} />
                         </div>
                     )}
                 </>

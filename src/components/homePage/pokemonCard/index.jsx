@@ -1,14 +1,15 @@
 import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import { ThemeContext } from "../../../contexts/themeContext"
-import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass, faPlus, faRotateLeft } from "@fortawesome/free-solid-svg-icons"
 import { typesData } from "../pokemonTypes"
 import pokeballIcon from "../../../images/pokeball-icon.png"
 import { Link } from "react-router-dom"
+import { fetchPokemonByUrl } from "../../../services/fetchPokemonByUrl"
+import { fetchPokemonByName } from "../../../services/fetchPokemonByName"
 
-export const PokemonCard = ({ data }) => {
+export const PokemonCard = (props) => {
     const { theme } = useContext(ThemeContext);
     const [pokemon, setPokemon] = useState(null);
     const [frontImage, setFrontImage] = useState(true)
@@ -20,17 +21,16 @@ export const PokemonCard = ({ data }) => {
         frontImage ? setFrontImage(false) : setFrontImage(true);
     }
 
-    const getPokemonData = () => {
-        const response = axios
-            .get(data)
-            .then(response => {
-                const data = response.data;
-                setPokemon(data);
-            })
-            .catch(error => {
-                throw new error(`Error to fetch pokemon data from pokeapi: ${error}`)
-            })
-        return response
+    const getPokemonData = async () => {
+        if (props.pokemonUrl) {
+            const response = await fetchPokemonByUrl(props.pokemonUrl);
+            setPokemon(response);
+        } else if (props.pokemonName) {
+            const response = await fetchPokemonByName(props.pokemonName);
+            setPokemon(response.data)
+        } else if (props.pokemonData) {
+            setPokemon(props.pokemonData);
+        }
     }
 
     useEffect(() => {
@@ -50,71 +50,71 @@ export const PokemonCard = ({ data }) => {
 
     return (
         <Container
-            style={ isHovered ? {...baseStyle, ...hoverStyle} : baseStyle}
-            onMouseEnter={() => {setIsHovered(true)}}
-            onMouseLeave={() => {setIsHovered(false)}}
-            >
-                    {backImage &&
-                        <button
-                            className="rotate"
-                            style={{ color: theme.color }}
-                            onClick={() => rotatePokemon()}
-                        >
-                            <FontAwesomeIcon icon={faRotateLeft} />
-                        </button>
-                    }
+            style={isHovered ? { ...baseStyle, ...hoverStyle } : baseStyle}
+            onMouseEnter={() => { setIsHovered(true) }}
+            onMouseLeave={() => { setIsHovered(false) }}
+        >
+            {backImage &&
+                <button
+                    className="rotate"
+                    style={{ color: theme.color }}
+                    onClick={() => rotatePokemon()}
+                >
+                    <FontAwesomeIcon icon={faRotateLeft} />
+                </button>
+            }
 
-                    <div className="image">
-                        {pokemon?.sprites.front_default
-                            ? <img
-                                src={
-                                    frontImage
-                                        ? pokemon?.sprites.front_default
-                                        : (backImage ? backImage : pokemon?.sprites.front_default)
-                                }
-                                alt={`Pokemon ${pokemon?.name}`} />
-                            : <div className="pokemonImageNotFound">
-                                <img src={pokeballIcon} alt={`Pokemon ${pokemon?.name} not found`} />
-                                <p>Image not found <FontAwesomeIcon icon={faMagnifyingGlass} /></p>
-                            </div>
+            <div className="image">
+                {pokemon?.sprites.front_default
+                    ? <img
+                        src={
+                            frontImage
+                                ? pokemon?.sprites.front_default
+                                : (backImage ? backImage : pokemon?.sprites.front_default)
                         }
+                        alt={`Pokemon ${pokemon?.name}`} />
+                    : <div className="pokemonImageNotFound">
+                        <img src={pokeballIcon} alt={`Pokemon ${pokemon?.name} not found`} />
+                        <p>Image not found <FontAwesomeIcon icon={faMagnifyingGlass} /></p>
+                    </div>
+                }
 
-                    </div>
-                    <h3 className="name">{pokemon?.name} <span className="id">#{pokemon?.id}</span></h3>
+            </div>
+            <h3 className="name">{pokemon?.name} <span className="id">#{pokemon?.id}</span></h3>
 
-                    <div className="types">
-                        {pokemon?.types.map((type, index) => {
-                            const typeName = type.type.name;
-                            const typeColor = typesData.find((typeData) => typeData.type === typeName)?.color;
-                            return (
-                                <div className="type" key={index} style={{ backgroundColor: typeColor }}>
-                                    <p>{typeName}</p>
-                                </div>
-                            )
-                        })}
-                    </div>
-                    <div className="measures">
-                        <div className="height">
-                            <p>Height:</p>
-                            <p>{pokemon?.height / 10}m</p>
+            <div className="types">
+                {pokemon?.types.map((type, index) => {
+                    const typeName = type.type.name;
+                    const typeColor = typesData.find((typeData) => typeData.type === typeName)?.color;
+                    return (
+                        <div className="type" key={index} style={{ backgroundColor: typeColor }}>
+                            <p>{typeName}</p>
                         </div>
-                        <div className="weight">
-                            <p>Weight:</p>
-                            <p>{pokemon?.weight / 10}kg</p>
-                        </div>
-                    </div>
-                    <Link to={`/pokemon/${pokemon?.name}`}>
-                    <button
-                        style={{
-                            color: theme.color,
-                            backgroundColor: theme.secondaryColor,
-                            transition: ".3s"
-                        }}
-                        className="moreDetails"
-                    >
-                        More details <FontAwesomeIcon icon={faPlus} />
-                    </button>
-                    </Link>
+                    )
+                })}
+            </div>
+            <div className="measures">
+                <div className="height">
+                    <p>Height:</p>
+                    <p>{pokemon?.height / 10}m</p>
+                </div>
+                <div className="weight">
+                    <p>Weight:</p>
+                    <p>{pokemon?.weight / 10}kg</p>
+                </div>
+            </div>
+            <Link to={`/pokemon/${pokemon?.id}`}>
+                <button
+                    style={{
+                        color: theme.color,
+                        backgroundColor: theme.secondaryColor,
+                        transition: ".3s"
+                    }}
+                    className="moreDetails"
+                >
+                    More details <FontAwesomeIcon icon={faPlus} />
+                </button>
+            </Link>
         </Container>
     )
 }

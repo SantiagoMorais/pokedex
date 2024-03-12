@@ -36,15 +36,10 @@ export const ThemeProvider = (props) => {
         window.localStorage.setItem('themeKey', JSON.stringify(theme))
     }, [theme]);
 
-    useEffect(() => {
-        if (themeLocal) {
-            setTheme(themeLocal);
-        }
-    }, []);
-
     return (
         <ThemeContext.Provider value={{theme, setTheme}}>
             {props.children}
         </ThemeContext.Provider>
     )
 }
+

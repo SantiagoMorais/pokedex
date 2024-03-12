@@ -9,7 +9,7 @@ export const NavBar = () => {
     const { theme } = useContext(ThemeContext)
 
     return (
-        <Container>
+        <Container >
             <Link to={`/`}>
                 <img
                     src={pokemonLogo}
@@ -19,7 +19,12 @@ export const NavBar = () => {
                 />
             </Link>
             <div className="themeTogglerButton">
-                <ThemeTogglerButton className="themeTogglerButton"/>
+                <ThemeTogglerButton />
+                <Link to={`/`}>
+                    <div className="return">
+                        <p style={{ color: theme.color }}>Return</p>
+                    </div>
+                </Link>
             </div>
         </Container>
     )
@@ -31,14 +36,15 @@ const Container = styled.section`
     max-width: 1440px;
     padding: 0px 40px;
     justify-content: center;
-    align-items: center;
     margin-bottom: 10px;
     position: relative;
+    height: 90px;
     
     .pokemonLogo {
         height: 80px;
         transition: .3s;
-        opacity: .6;
+        opacity: .8;
+        z-index: 1;
 
         &:hover {
             height: 90px;
@@ -48,11 +54,42 @@ const Container = styled.section`
 
     .themeTogglerButton {
         position: absolute;
-        right: 20px;
-        top: 10px;
+        right: 120px;
+        top: 0px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 50px;
+
+        .return {
+            font-weight: 600;
+            padding: 5px;
+    
+            &:hover > p {
+                opacity: 1;
+                filter: drop-shadow(0 0 10px);
+            }
+    
+            p {
+                opacity: .6;
+                transition: .3s;
+            }
+        }
     }
 
     @media (max-width: 900px) {
+        height: 120px;
+
+        .return {
+            font-weight: 500;
+            right: 0px;
+            padding: 3px;
+    
+            p {
+                font-size: 14px;
+            }
+        }
+        
         .pokemonLogo {
             height: 60px;
             transition: .3s;

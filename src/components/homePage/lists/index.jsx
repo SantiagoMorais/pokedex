@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowCircleUp, faArrowUp } from "@fortawesome/free-solid-svg-icons"
 import { ThemeContext } from "../../../contexts/themeContext"
 import styled from "styled-components"
-import { PokemonFound } from "../searchPokemon"
+import { PokemonFound } from "../pokemonFound"
 
 export const Lists = () => {
     const { typeList, searchedPokemon } = useContext(PokemonListsContext)

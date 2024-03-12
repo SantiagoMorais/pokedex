@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { fetchPokemon } from "../../../services/fetchPokemon"
+import { fetchPokemonList } from "../../../services/fetchPokemonList"
 import styled from "styled-components";
 import { PokemonCard } from "../pokemonCard";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -16,10 +16,10 @@ export const DefaultPokemonList = () => {
     const {theme} = useContext(ThemeContext)
 
     const getPokemons = async () => {
-        const response = await fetchPokemon(listSize, offset);
+        const response = await fetchPokemonList(listSize, offset);
         const newPokemons = response.results;
 
-        //The code below checks if the getPokemons function is being called twice, then it's duplicating the pokemon state data.
+        //The code below checks if the getPokemons function is being called twice, to avoid duplicate Pokémon state data.
         setDefaultList(prevPokemons => {
             const updatedPokemons = [...prevPokemons];
             newPokemons.forEach(newPokemon => {
@@ -48,7 +48,7 @@ export const DefaultPokemonList = () => {
                 {defaultList &&
                     <>
                         {defaultList.map((pokemon, index) =>
-                            <PokemonCard key={index} data={pokemon.url} />
+                            <PokemonCard key={index} pokemonUrl={pokemon.url} />
                         )}
                     </>
                 }
@@ -128,7 +128,7 @@ const Container = styled.section`
     @media(max-width: 460px) {
         .pokemons {
             gap: 10px;
-            padding: 0;
+            padding: 10px;
         }
     }
 `

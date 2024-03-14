@@ -3,83 +3,160 @@ import styled from "styled-components";
 import { fetchPokemonByName } from "../../../services/fetchPokemonByName";
 import { ThemeContext } from "../../../contexts/themeContext";
 import { Link, useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
+import { typesData } from "../../homePage/pokemonTypes";
+import { PokemonImage } from "../pokemonImage";
+import { fetchPokemonBySpecie } from "../../../services/fetchPokemonBySpecie";
+import { Measures } from "../measures";
 
-export const PokemonPanel = (props) => {
+export const PokemonPanel = () => {
     const { theme } = useContext(ThemeContext)
     const [pokemon, setPokemon] = useState(null)
+    const [listImages, setListImages] = useState([])
+    const [currentImage, setCurrentImage] = useState(null);
+    const [pokemonDescription, setPokemonDescription] = useState('');
+    const [speciesData, setSpeciesData] = useState(null);
     const { id } = useParams();
 
+    const previousPage = pokemon?.id > 1 ? pokemon?.id - 1 : pokemon?.id;
+    const nextPage = pokemon?.id + 1;
+    const pokemonTypeColor = typesData.find((typeData) => typeData.type === pokemon?.types[0].type.name)?.color;
+
     const getPokemon = async () => {
-        const { data } = await fetchPokemonByName(props.id);
+        const { data } = await fetchPokemonByName(id);
         setPokemon(data);
+        setListImages(data.sprites)
+        setCurrentImage(data.sprites.front_default)
+    }
+
+    const getSpeciesData = async () => {
+        const response = await fetchPokemonBySpecie(id)
+        const englishDescription = response.flavor_text_entries.find(en => en.language.name === 'en')?.flavor_text
+        setPokemonDescription(englishDescription)
+        setSpeciesData(response);
     }
 
     useEffect(() => {
         getPokemon();
-    }, [])
+        getSpeciesData();
+    }, [id])
 
     return (
         <Container style={{ color: theme.color }}>
-            <Link to={`/pokemon/${id}`}>
-                <div className="previousPokemon">
-                    previous Pokemon
-                </div>
-            </Link>
             {pokemon !== null &&
-                <div className="panel">
-                    <h1 className="name">{pokemon.name}</h1>
-                    <div className="pokemonDescription">
-                        <div className="image">
-                            image
-                            <div className="buttons">buttons</div>
-                        </div>
-                        <div className="description">description</div>
+                <>
+                    <div className="changePokemonsPage">
+                        <Link to={`/pokemon/${previousPage}`}>
+                            <button
+                                style={{
+                                    color: theme.color,
+                                    backgroundColor: pokemonTypeColor,
+                                }}
+                                className="previousPokemon">
+                                <FontAwesomeIcon icon={faCaretLeft} />
+                                <p>Previous Pokemon</p>
+                            </button>
+                        </Link>
+                        <h1 className="name" >{pokemon.name} <span className="id">#{pokemon.id}</span></h1>
+                        <Link to={`/pokemon/${nextPage}`}>
+                            <button
+                                style={{
+                                    color: theme.color,
+                                    backgroundColor: pokemonTypeColor,
+                                }}
+                                className="nextPokemon">
+                                <p>Next Pokemon</p>
+                                <FontAwesomeIcon icon={faCaretRight} />
+                            </button>
+                        </Link>
                     </div>
-                </div>
+                    <div className="details">
+                        <div className="image">
+                            <PokemonImage
+                                listImages={listImages}
+                                pokemon={pokemon}
+                                image={pokemon.sprites.front_default}
+                                setCurrentImage={setCurrentImage}
+                                currentImage={currentImage}
+                            />
+                        </div>
+                        <div className="description">
+                            <p>{pokemonDescription}</p>
+                        </div>
+                        <Measures pokemon={pokemon} speciesData={speciesData}/>
+                    </div>
+                </>
             }
-            <Link to={`/pokemon/${id}`}>
-                <div className="nextPokemon">
-                    next Pokemon
-                </div>
-            </Link>
-        </Container>
+        </Container >
     )
 }
 
 const Container = styled.div`
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center; 
     gap: 20px;
+    
 
-    .name {
-        text-transform: capitalize;
-        font-size: 24px;
-    }
-
-    .pokemonDescription {
+    .changePokemonsPage {
         display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
         margin-bottom: 20px;
 
-        .image {
-            height: 200px;
-            border: 1px solid;
-            width: 250px;
-            border-right: none;
+        .previousPokemon, .nextPokemon {
+            cursor: pointer;
+            padding: 10px;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            gap: 10px;
+            align-items: center;
+            border: 1px solid;
+            border-radius: 8px;
+            font-size: 16px;
+            opacity: .8;
+            transition: .3s;
 
-            .buttons {
-                border-top: 1px solid;
-                height: 50px;
+            &:hover {
+                box-shadow: 0 0 10px;
+                opacity: 1;
             }
         }
 
+            .name {
+                text-transform: capitalize;
+                font-size: 28px;
+                transition: .3s;
+
+                .id {
+                    opacity: .6;
+                    font-size: 20px;
+                }
+            }
+    }
+
+    .details {
+        border: 1px solid;
+        width: 100%;
+        display: flex;
+        padding: 10px;
+        gap: 20px;
+        align-items: center;
+        border-radius: 16px;
+
         .description {
-            height: 200px;
-            border: 1px solid;
-            width: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            text-align: center;
+
+            p {
+                font-size: 20px;
+            }
         }
     }
 `

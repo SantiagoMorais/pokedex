@@ -21,7 +21,7 @@ export const NavBar = () => {
     }
 
     const handleSubmitChange = (e) => {
-        setSearchField(e.target.value)
+        setSearchField(e.target.value.toLowerCase());
     }
 
     useEffect(() => {
@@ -47,8 +47,6 @@ export const NavBar = () => {
                             id="pokemonName"
                             placeholder="Search by name or #id"
                             style={{ color: theme.color }}
-                            pattern="^[a-z0-9]+$"
-                            title="Only lowercase letters and numbers are allowed."
                         />
                         <button
                             type="submit"

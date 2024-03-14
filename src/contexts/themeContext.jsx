@@ -10,7 +10,8 @@ export const themes = {
         logoColor: "invert(0%)",
         themeTogglerButtonStyle: {
             left: "0px"
-        }
+        },
+        footerColor: "#B6BBC4",
     },
     dark: {
         color: "#eeeeee",
@@ -20,7 +21,8 @@ export const themes = {
         themeTogglerButtonStyle: {
             left: "-25px", 
             transform: "scaleX(-1)",
-        }
+        },
+        footerColor: "#040D12",
     }
 }
 

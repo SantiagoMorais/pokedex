@@ -3,15 +3,19 @@ import { NavBar } from "../navBar"
 import { useContext } from "react"
 import { ThemeContext } from "../../../contexts/themeContext"
 import { Lists } from "../lists"
+import { Footer } from "../../footer"
 
 export const Home = () => {
     const { theme } = useContext(ThemeContext);
 
     return (
-        <Container style={{backgroundColor: theme.secondaryColor,}}>
+        <>
+            <Container style={{ backgroundColor: theme.secondaryColor, }}>
                 <NavBar />
                 <Lists />
-        </Container>
+            </Container>
+            <Footer />
+        </>
     )
 }
 

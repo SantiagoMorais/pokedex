@@ -24,6 +24,7 @@ export const PokemonCard = (props) => {
     const getPokemonData = async () => {
         if (props.pokemonUrl) {
             const response = await fetchPokemonByUrl(props.pokemonUrl);
+            console.log(response);
             setPokemon(response);
         } else if (props.pokemonName) {
             const response = await fetchPokemonByName(props.pokemonName);

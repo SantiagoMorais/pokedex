@@ -7,6 +7,7 @@ import { ThemeTogglerButton } from "../../themeTogglerButton"
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { PokemonListsContext } from "../../../contexts/pokemonListsContext"
+import { Link } from "react-router-dom"
 
 export const NavBar = () => {
     const { theme } = useContext(ThemeContext)
@@ -29,11 +30,11 @@ export const NavBar = () => {
     }, [searchedPokemon])
 
     return (
-        <Container style={{ color: theme.color }}>
+        <Container style={{ color: theme.color }}>      
             <img
                 src={pokemonLogo}
                 alt="pokemonLogo"
-                style={{filter: theme.logoColor}}
+                style={{filter: theme.logoColor }}
                 className="pokemonLogo"
             />
             <div className="search">
@@ -90,6 +91,12 @@ const Container = styled.section`
     .pokemonLogo {
         height: 60px;
         transition: .3s;
+        opacity: .8;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 1;
+        };
     }
 
     .search {

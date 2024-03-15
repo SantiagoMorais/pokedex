@@ -13,6 +13,7 @@ export const PokemonListByType = () => {
     const icon = typesData.find(type => type.type === currentType)?.icon;
     const color = typesData.find(type => type.type === currentType)?.color
 
+    console.log(typeList);
     const handleReturnList = () => {
         setTypeList([]);
         setCurrentType('');
@@ -43,7 +44,7 @@ export const PokemonListByType = () => {
                         </button>
 
                         {typeList.map((pokemon, index) =>
-                            <PokemonCard key={index} data={pokemon.pokemon.url} />
+                            <PokemonCard key={index} pokemonUrl={pokemon.pokemon.url} />
                         )}
                     </>
                 }

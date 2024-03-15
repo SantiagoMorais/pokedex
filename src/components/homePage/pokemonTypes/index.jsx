@@ -53,7 +53,7 @@ export const PokemonTypes = () => {
     }
 
     const getPokemonsByType = async (type) => {
-        const res = await fetchPokemonByType(type)
+        const res = await fetchPokemonByType(type);
         const pokemonList = res.pokemon;
         setTypeList(pokemonList);
     }

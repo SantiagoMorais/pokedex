@@ -71,8 +71,9 @@ export const PokemonPanel = () => {
                             </button>
                         </Link>
                     </div>
+
                     <div className="details">
-                        <div className="image">
+                        <div className="image" style={{ backgroundColor: theme.secondaryColor }}>
                             <PokemonImage
                                 listImages={listImages}
                                 pokemon={pokemon}
@@ -82,9 +83,10 @@ export const PokemonPanel = () => {
                             />
                         </div>
                         <div className="description">
-                            <p>{pokemonDescription}</p>
+                            <p>{pokemonDescription ? pokemonDescription : <p>No Description 🤷🏽‍♂️</p>}</p>
                         </div>
-                        <Measures pokemon={pokemon} speciesData={speciesData}/>
+                        <div className="backgroundColor" style={{ backgroundColor: pokemonTypeColor }}></div>
+                        <Measures pokemon={pokemon} speciesData={speciesData} />
                     </div>
                 </>
             }
@@ -99,7 +101,6 @@ const Container = styled.div`
     justify-content: center; 
     gap: 20px;
     
-
     .changePokemonsPage {
         display: flex;
         justify-content: space-between;
@@ -145,6 +146,13 @@ const Container = styled.div`
         gap: 20px;
         align-items: center;
         border-radius: 16px;
+        position: relative;
+        overflow: hidden;
+        transition: .3s;
+
+        .image {
+            border-radius: 8px;
+        }
 
         .description {
             display: flex;
@@ -158,5 +166,16 @@ const Container = styled.div`
                 font-size: 20px;
             }
         }
+    }
+
+    .backgroundColor {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: .3;
+        transition: .3s;
     }
 `

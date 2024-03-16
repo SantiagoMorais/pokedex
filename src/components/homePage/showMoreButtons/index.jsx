@@ -9,7 +9,7 @@ export const ShowMoreButtons = (props) => {
 
     const buttonStyle = {
         color: theme.color,
-        backgroundColor: theme.secondaryColor
+        backgroundColor: theme.secondaryColor,
     }
 
     return (
@@ -22,7 +22,6 @@ export const ShowMoreButtons = (props) => {
                     className="buttons"
                     style={{
                         color: theme.color,
-                        backgroundColor: theme.secondaryColor,
                     }}
                 >
                     <FontAwesomeIcon

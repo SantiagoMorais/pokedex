@@ -47,12 +47,12 @@ export const NavBar = () => {
                             name="pokemonName"
                             id="pokemonName"
                             placeholder="Search by name or #id"
-                            style={{ color: theme.color }}
+                            style={{ color: theme.color, backgroundColor: theme.secondaryColor }}
                         />
                         <button
                             type="submit"
                             className="submitButton"
-                            style={{color: theme.color}}
+                            style={{color: theme.color, backgroundColor: theme.secondaryColor}}
                         >
                             <FontAwesomeIcon className="searchIcon" icon={faCaretRight} />
                         </button>

@@ -24,7 +24,7 @@ export const ThemeTogglerButton = () => {
                         style={theme.themeTogglerButtonStyle}
                         className="themeIcon"
                     />
-                    <div className="bar"></div>
+                    <div className="bar" style={{backgroundColor: theme.secondaryColor}}></div>
                 </div>
                 <FontAwesomeIcon className="icon" style={{ color: themes.dark.color }} icon={faMoon} flip="horizontal" />
             </Button>

@@ -10,17 +10,28 @@ export const PokemonImage = ({ listImages, pokemon, currentImage, setCurrentImag
 
     const rotateImage = () => {
         if (currentImage === null) return;
-
         let newImage = null;
 
         if (currentImage === listImages.front_default || currentImage === listImages.back_default) {
-            newImage = currentImage === listImages.front_default ? listImages.back_default : listImages.front_default;
+            newImage =
+                currentImage === listImages.front_default
+                    ? listImages.back_default
+                    : listImages.front_default;
         } else if (currentImage === listImages.front_female || currentImage === listImages.back_female) {
-            newImage = currentImage === listImages.front_female ? listImages.back_female : listImages.front_female;
+            newImage =
+                currentImage === listImages.front_female
+                    ? listImages.back_female
+                    : listImages.front_female;
         } else if (currentImage === listImages.front_shiny || currentImage === listImages.back_shiny) {
-            newImage = currentImage === listImages.front_shiny ? listImages.back_shiny : listImages.front_shiny;
+            newImage =
+                currentImage === listImages.front_shiny
+                    ? listImages.back_shiny
+                    : listImages.front_shiny;
         } else {
-            newImage = currentImage === listImages.front_shiny_female ? listImages.back_shiny_female : listImages.front_shiny_female;
+            newImage =
+                currentImage === listImages.front_shiny_female
+                    ? listImages.back_shiny_female
+                    : listImages.front_shiny_female;
         }
 
         setCurrentImage(newImage);
@@ -28,17 +39,29 @@ export const PokemonImage = ({ listImages, pokemon, currentImage, setCurrentImag
 
     const changeGender = () => {
         if (currentImage === null) return;
-
         let newImage = null;
 
         if (currentImage === listImages.front_default || currentImage === listImages.front_female) {
-            newImage = currentImage === listImages.front_default ? listImages.front_female : listImages.front_default;
+            newImage =
+                currentImage === listImages.front_default
+                    ? listImages.front_female
+                    : listImages.front_default;
         } else if (currentImage === listImages.front_shiny || currentImage === listImages.front_shiny_female) {
-            newImage = currentImage === listImages.front_shiny ? listImages.front_shiny_female : listImages.front_shiny;
+            newImage =
+                currentImage === listImages.front_shiny
+                    ? listImages.front_shiny_female
+                    : listImages.front_shiny;
         } else if (currentImage === listImages.back_default || currentImage === listImages.back_female) {
-            newImage = currentImage === listImages.back_default ? listImages.back_female : listImages.back_default;
+            newImage =
+                currentImage === listImages.back_default
+                    ? listImages.back_female
+                    : listImages.back_default;
         } else {
-            newImage = currentImage === listImages.back_shiny ? listImages.back_shiny_female : listImages.back_shiny;
+            newImage =
+
+                currentImage === listImages.back_shiny
+                    ? listImages.back_shiny_female
+                    : listImages.back_shiny;
         }
 
         setCurrentImage(newImage);
@@ -50,13 +73,25 @@ export const PokemonImage = ({ listImages, pokemon, currentImage, setCurrentImag
         let newImage = null;
 
         if (currentImage === listImages.front_default || currentImage === listImages.front_shiny) {
-            newImage = currentImage === listImages.front_default ? listImages.front_shiny : listImages.front_default;
+            newImage =
+                currentImage === listImages.front_default
+                    ? listImages.front_shiny
+                    : listImages.front_default;
         } else if (currentImage === listImages.back_default || currentImage === listImages.back_shiny) {
-            newImage = currentImage === listImages.back_default ? listImages.back_shiny : listImages.back_default;
+            newImage =
+                currentImage === listImages.back_default
+                    ? listImages.back_shiny
+                    : listImages.back_default;
         } else if (currentImage === listImages.front_female || currentImage === listImages.front_shiny_female) {
-            newImage = currentImage === listImages.front_female ? listImages.front_shiny_female : listImages.front_female;
+            newImage =
+                currentImage === listImages.front_female
+                    ? listImages.front_shiny_female
+                    : listImages.front_female;
         } else {
-            newImage = currentImage === listImages.back_female ? listImages.back_shiny_female : listImages.back_female;
+            newImage =
+                currentImage === listImages.back_female
+                    ? listImages.back_shiny_female
+                    : listImages.back_female;
         }
 
         setCurrentImage(newImage);
@@ -64,7 +99,7 @@ export const PokemonImage = ({ listImages, pokemon, currentImage, setCurrentImag
 
 
     return (
-        <Container>
+        <Container style={{backgroundColor: theme.secondaryColor}}>
             {currentImage &&
                 <>
                     <img
@@ -73,20 +108,24 @@ export const PokemonImage = ({ listImages, pokemon, currentImage, setCurrentImag
                         alt="pokeball icon"
                         style={{ filter: theme.logoColor }}
                     />
-                    <img className="pokemonImage" src={currentImage} alt={`Pokemon ${pokemon.name}`} />
+                    <img
+                        className="pokemonImage"
+                        src={currentImage}
+                        alt={`Pokemon ${pokemon.name}`} 
+                        />
                     <div className="buttons">
                         {listImages?.front_female !== null &&
-                            <button onClick={() => { changeGender() }} title="Gender" style={{color: theme.color, backgroundColor: "#59D5E0"}}>
+                            <button onClick={() => { changeGender() }} title="Gender" style={{ color: theme.color, backgroundColor: "#59D5E0" }}>
                                 <FontAwesomeIcon icon={faVenusMars} />
                             </button>
                         }
                         {listImages?.back_default &&
-                            <button onClick={() => { rotateImage() }} title="Rotate" style={{color: theme.color, backgroundColor: "#9BCF53"}}>
+                            <button onClick={() => { rotateImage() }} title="Rotate" style={{ color: theme.color, backgroundColor: "#9BCF53" }}>
                                 <FontAwesomeIcon icon={faSyncAlt} />
                             </button>
                         }
                         {listImages?.front_shiny !== null &&
-                            <button onClick={() => { changeToShiny() }} title="Shiny" style={{color: theme.color, backgroundColor: "#FAA300"}}>
+                            <button onClick={() => { changeToShiny() }} title="Shiny" style={{ color: theme.color, backgroundColor: "#FAA300" }}>
                                 <FontAwesomeIcon icon={faStar} />
                             </button>
                         }
@@ -105,6 +144,7 @@ const Container = styled.div`
     flex-direction: column;
     padding: 10px;
     position: relative;
+    z-index: 2;
 
     .backgroundPokeball {
         position: absolute;
@@ -114,7 +154,7 @@ const Container = styled.div`
         left: 0;
         right: 0;
         margin: auto;
-        opacity: .3;
+        opacity: .2;
         transition: .3s;
     }
 

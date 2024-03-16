@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { fetchPokemonByUrl } from "../../../services/fetchPokemonByUrl";
 import { PokemonCard } from "../../homePage/pokemonCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCircle, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { ThemeContext } from "../../../contexts/themeContext";
 
 export const PokemonEvolution = () => {
@@ -14,9 +14,11 @@ export const PokemonEvolution = () => {
     const [firstEvolution, setFirstEvolution] = useState(null)
     const [secondEvolution, setSecondEvolution] = useState([]);
     const [thirdEvolution, setThirdEvolution] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const { id } = useParams();
 
     const getEvolutionData = async (id) => {
+        setIsLoading(true);
         setFirstEvolution(null);
         setSecondEvolution([]);
         setThirdEvolution([]);
@@ -45,6 +47,7 @@ export const PokemonEvolution = () => {
 
         if (secondEvolutionsName.length > 0) setSecondEvolution(secondEvolutionsName)
         if (thirdEvolutionsName.length > 0) setThirdEvolution(thirdEvolutionsName)
+        setIsLoading(false);
     }
 
     useEffect(() => {
@@ -55,6 +58,10 @@ export const PokemonEvolution = () => {
         <Container style={{ color: theme.color }}>
             <h2 className="title"> Line of evolution </h2>
 
+            {isLoading &&
+                <p className="isLoading" style={{color: theme.color}}>Loading <FontAwesomeIcon icon={faSpinner} spin/></p>
+            }
+            
             <div className="cards">
                 {firstEvolution !== null &&
                     <div className="pokemon">
@@ -116,6 +123,13 @@ const Container = styled.div`
         font-size: 30px;
         justify-content: center;
         font-weight: 500;
+    }
+
+    .isLoading {
+        width: 100%;
+        text-align: center;
+        padding: 20px;
+        font-size: 25px;
     }
 
     .cards {

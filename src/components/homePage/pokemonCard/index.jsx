@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import { ThemeContext } from "../../../contexts/themeContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faMagnifyingGlass, faPlus, faRotateLeft } from "@fortawesome/free-solid-svg-icons"
+import { faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { typesData } from "../pokemonTypes"
 import pokeballIcon from "../../../images/pokeball-icon.png"
 import { Link } from "react-router-dom"
@@ -12,14 +12,10 @@ import { fetchPokemonByName } from "../../../services/fetchPokemonByName"
 export const PokemonCard = (props) => {
     const { theme } = useContext(ThemeContext);
     const [pokemon, setPokemon] = useState(null);
-    const [frontImage, setFrontImage] = useState(true)
     const [isHovered, setIsHovered] = useState(false)
     const cardColor = typesData.find((typeData) => typeData.type === pokemon?.types[0].type.name)?.color;
     const backImage = pokemon?.sprites.back_default;
 
-    const rotatePokemon = () => {
-        frontImage ? setFrontImage(false) : setFrontImage(true);
-    }
 
     const getPokemonData = async () => {
         if (props.pokemonUrl) {
@@ -55,32 +51,20 @@ export const PokemonCard = (props) => {
             onMouseEnter={() => { setIsHovered(true) }}
             onMouseLeave={() => { setIsHovered(false) }}
         >
-            {backImage &&
-                <button
-                    className="rotate"
-                    style={{ color: theme.color }}
-                    onClick={() => rotatePokemon()}
-                >
-                    <FontAwesomeIcon icon={faRotateLeft} />
-                </button>
-            }
+
 
             <div className="image">
                 {pokemon?.sprites.front_default
                     ? <img
-                        src={
-                            frontImage
-                                ? pokemon?.sprites.front_default
-                                : (backImage ? backImage : pokemon?.sprites.front_default)
-                        }
+                        src={ pokemon?.sprites.front_default }
                         alt={`Pokemon ${pokemon?.name}`} />
                     : <div className="pokemonImageNotFound">
                         <img src={pokeballIcon} alt={`Pokemon ${pokemon?.name} not found`} />
                         <p>Image not found <FontAwesomeIcon icon={faMagnifyingGlass} /></p>
                     </div>
                 }
-
             </div>
+
             <h3 className="name">{pokemon?.name} <span className="id">#{pokemon?.id}</span></h3>
 
             <div className="types">
@@ -122,7 +106,7 @@ export const PokemonCard = (props) => {
 
 const Container = styled.div`
     width: 200px;
-    min-height: 340px;
+    min-height: 300px;
     border-radius: 8px;
     border: 1px solid;
     display: flex;
@@ -132,26 +116,7 @@ const Container = styled.div`
     padding: 15px;
     position: relative;
 
-    .rotate {
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        border: none;
-        cursor: pointer;
-        transition: .3s;
-        background: none;
-        opacity: .6;
-        font-size: 16px;
-
-        &:hover {
-            box-shadow: 0 0 10px;
-            opacity: 1;
-        }
-    }
-
     .image {
-        transition: .3s;
-
         .pokemonImageNotFound {
             display: flex;
             flex-direction: column;

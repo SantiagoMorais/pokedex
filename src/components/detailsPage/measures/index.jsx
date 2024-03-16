@@ -10,7 +10,7 @@ export const Measures = ({ pokemon, speciesData }) => {
     const { theme } = useContext(ThemeContext)
 
     return (
-        <Container>
+        <Container style={{backgroundColor: theme.secondaryColor}}>
             <img
                 className="backgroundPokeball"
                 src={pokeballBackgroundIcon}
@@ -89,7 +89,7 @@ const Container = styled.div`
         left: 0;
         right: 0;
         margin: auto;
-        opacity: .3;
+        opacity: .2;
         transition: .3s;
     }
 
@@ -97,6 +97,7 @@ const Container = styled.div`
         display: flex;
         gap: 10px;
         text-transform: capitalize;
+        z-index: 1;
 
         .type {
             padding: 3px;

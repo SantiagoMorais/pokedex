@@ -2,7 +2,7 @@
 
 🧾✍ Este projeto é o exercício final do curso de Front-end do [DevQuest](https://www.linkedin.com/school/devquest-dev-em-dobro/about/).
 
-<a src="https://pokedex-with-pokeapi.vercel.app" target="_blank">Clique aqui para visualizar a página do projeto no ar</a>
+[Clique aqui para visualizar a página do projeto no ar](https://pokedex-with-pokeapi.vercel.app).
 
 <img src="./src/screenshots/project-completed.png" alt="desktop preview">
 

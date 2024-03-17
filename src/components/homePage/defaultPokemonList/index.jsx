@@ -9,11 +9,11 @@ import { ShowMoreButtons } from "../showMoreButtons";
 import { PokemonListsContext } from "../../../contexts/pokemonListsContext";
 
 export const DefaultPokemonList = () => {
-    const {defaultList, setDefaultList} = useContext(PokemonListsContext)
+    const { defaultList, setDefaultList } = useContext(PokemonListsContext)
     const [listSize, setListSize] = useState(10);
     const [offset, setOffset] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    const {theme} = useContext(ThemeContext)
+    const { theme } = useContext(ThemeContext)
 
     const getPokemons = async () => {
         const response = await fetchPokemonList(listSize, offset);
@@ -54,11 +54,7 @@ export const DefaultPokemonList = () => {
                 }
             </div>
             {isLoading
-                ? (
-                    <>
-                        <p style={{color: theme.color}}>Loading <FontAwesomeIcon icon={faSpinner} spin/></p>
-                    </>
-                )
+                ? <p className="isLoading" style={{ color: theme.color }}>Loading <FontAwesomeIcon icon={faSpinner} spin /></p>
                 : <ShowMoreButtons
                     showMore10={() => loadMorePokemons(10)}
                     showMore20={() => loadMorePokemons(20)}
@@ -79,7 +75,6 @@ const Container = styled.section`
     justify-content: center;
 
     .pokemons {
-        
         padding: 20px 0;
         display: flex;
         flex-wrap: wrap;
@@ -123,6 +118,13 @@ const Container = styled.section`
                 }
             }
         }
+    }
+
+    .isLoading {
+        height: 63px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     @media(max-width: 460px) {

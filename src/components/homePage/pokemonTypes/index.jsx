@@ -17,7 +17,7 @@ import psychicType from '../../../images/typeIcons/Pokemon_Type_Icon_Psychic.png
 import rockType from '../../../images/typeIcons/Pokemon_Type_Icon_Rock.png'
 import steelType from '../../../images/typeIcons/Pokemon_Type_Icon_Steel.png'
 import waterType from '../../../images/typeIcons/Pokemon_Type_Icon_Water.png'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { PokemonListsContext } from '../../../contexts/pokemonListsContext'
 import { fetchPokemonByType } from '../../../services/fetchPokemonByType'
 
@@ -43,24 +43,24 @@ export const typesData = [
 ]
 
 export const PokemonTypes = () => {
-    const {setTypeList, currentType, setCurrentType} = useContext(PokemonListsContext)
+    const {setTypeList, currentType, setCurrentType} = useContext(PokemonListsContext);
 
     const handleCurrentType = (type) => {
         if (type !== currentType) {
             setTypeList([]);
             setCurrentType(type);
         }
-    }
+    };
 
     const getPokemonsByType = async (type) => {
         const res = await fetchPokemonByType(type);
         const pokemonList = res.pokemon;
         setTypeList(pokemonList);
-    }
+    };
 
     useEffect(() => {
         currentType ? getPokemonsByType(currentType) : ''
-    }, [currentType])
+    }, [currentType]);
 
     return (
         <Icons>

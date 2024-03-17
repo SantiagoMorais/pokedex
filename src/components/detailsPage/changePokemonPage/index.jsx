@@ -11,13 +11,13 @@ export const ChangePokemonPage = ({ pokemon }) => {
     let previousPage = pokemon?.id - 1;
     let nextPage = pokemon?.id + 1;
     const pokemonTypeColor = typesData.find((typeData) => typeData.type === pokemon?.types[0].type.name)?.color;
-    
+
     return (
         <Container>
             {previousPage >= 1
-                ?
-                <Link to={`/pokemon/${previousPage}`}>
+                ? <Link to={`/pokemon/${previousPage}`}>
                     <button
+                        title="Previous Pokémon"
                         style={{
                             color: theme.color,
                             backgroundColor: pokemonTypeColor,
@@ -27,8 +27,7 @@ export const ChangePokemonPage = ({ pokemon }) => {
                         <p>Previous Pokemon</p>
                     </button>
                 </Link>
-                :
-                <button
+                : <button
                     style={{
                         color: theme.color,
                         backgroundColor: theme.secondaryColor,
@@ -38,11 +37,10 @@ export const ChangePokemonPage = ({ pokemon }) => {
                     <p>Previous Pokemon</p>
                 </button>
             }
-
             <h1 className="name" >{pokemon.name} <span className="id">#{pokemon.id}</span></h1>
-
             <Link to={`/pokemon/${nextPage}`}>
                 <button
+                    title="Next Pokémon"
                     style={{
                         color: theme.color,
                         backgroundColor: pokemonTypeColor,
@@ -108,30 +106,32 @@ const Container = styled.div`
             }
         }
 
+        .previousPokemon, .nextPokemon, .firstPokemon {
+            padding: 10px;
+            font-size: 25px;
+
+            p {
+                display: none;
+            }
+        }
+
         .details {
             width: fit-content;
             flex-wrap: wrap;
-
 
             .description {
                 width: 235px;
                 order: 3;
             }
-
         }
     }
 
     @media(max-width: 450px) {
         flex-wrap: wrap;
         gap: 15px;
-        justify-content: center;
-
-        .previousPokemon, .nextPokemon, .firstPokemon {
-            width: 120px;
-        }
 
         .name {
-            order: 3;
+            max-width: 60%;
         }
     }
 

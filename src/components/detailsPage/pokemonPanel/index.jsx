@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { fetchPokemonByName } from "../../../services/fetchPokemonByName";
+import { fetchPokemonData } from "../../../services/fetchPokemonData";
 import { ThemeContext } from "../../../contexts/themeContext";
 import { Link, useParams } from "react-router-dom";
 import { typesData } from "../../homePage/pokemonTypes";
@@ -22,7 +22,7 @@ export const PokemonPanel = () => {
     const pokemonTypeColor = typesData.find((typeData) => typeData.type === pokemon?.types[0].type.name)?.color;
 
     const getPokemon = async () => {
-        const { data } = await fetchPokemonByName(id);
+        const { data } = await fetchPokemonData(id);
         setLastPokemon(false);
         setPokemon(data);
         setListImages(data.sprites)
@@ -51,17 +51,15 @@ export const PokemonPanel = () => {
         <Container style={{ color: theme.color }}>
             {lastPokemon &&
                 <>
-                    <p className="lastPokemon">We found an error finding the Pokémon #{id}. This one probably don't exist or that was the last Pokémon of the list! 😉</p>
+                    <p className="lastPokemon">We found an error searching the Pokémon #{id} 🤔🔎</p>
                     <Link to={`/`}>
                         <p className="lastPokemon return" style={{ color: theme.color }}>Return to the first page</p>
                     </Link>
                 </>
             }
-
             {pokemon !== null &&
                 <>
-                    <ChangePokemonPage pokemon={pokemon}/>
-
+                    <ChangePokemonPage pokemon={pokemon} />
                     <div className="details">
                         <div className="backgroundColor" style={{ backgroundColor: pokemonTypeColor }}></div>
                         <div className="image" style={{ backgroundColor: theme.secondaryColor }}>
@@ -74,9 +72,14 @@ export const PokemonPanel = () => {
                             />
                         </div>
                         <div className="description">
-                            <div>{pokemonDescription ? pokemonDescription : <p>No Description 🤷🏽‍♂️</p>}</div>
+                            <div>{pokemonDescription
+                                ?
+                                <>
+                                    <h3 className="descriptionTitle">Description: </h3>
+                                    {pokemonDescription}
+                                </>
+                                : <p>No Description 🤷🏽‍♂️</p>}</div>
                         </div>
-
                         <Measures pokemon={pokemon} speciesData={speciesData} />
                     </div>
                 </>
@@ -130,13 +133,19 @@ const Container = styled.div`
         .description {
             display: flex;
             justify-content: center;
+            flex-direction: column;
+            gap: 10px;
             align-items: center;
             height: 100%;
             text-align: center;
             min-width: 235px;
+            margin-bottom: 15px;
 
             div {
                 font-size: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
             }
         }
     }
@@ -163,17 +172,21 @@ const Container = styled.div`
             width: fit-content;
             flex-wrap: wrap;
 
-
-            .description {
-                width: 235px;
-                order: 3;
+            .image {
+                width: 50%;
             }
 
+            .description {
+                order: 3;
+            }
         }
     }
 
-    @media(max-width: 450px) {
-
+    @media(max-width: 523px) {
+        .details {
+            .image {
+                width: 100%;
+            }
+        }
     }
-
 `

@@ -4,7 +4,7 @@ import { useContext } from "react"
 import { ThemeContext } from "../../../contexts/themeContext"
 import { typesData } from "../../homePage/pokemonTypes"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBolt, faGem, faMountain, faTree } from "@fortawesome/free-solid-svg-icons"
+import { faBolt, faGem, faTree } from "@fortawesome/free-solid-svg-icons"
 
 export const Measures = ({ pokemon, speciesData }) => {
     const { theme } = useContext(ThemeContext)
@@ -17,7 +17,6 @@ export const Measures = ({ pokemon, speciesData }) => {
                 alt="pokeball icon"
                 style={{ filter: theme.logoColor }}
             />
-
             <div className="types">
                 {pokemon?.types.map((type, index) => {
                     const typeName = type.type.name;
@@ -29,7 +28,6 @@ export const Measures = ({ pokemon, speciesData }) => {
                     )
                 })}
             </div>
-
             <ul className="data">
                 <li className="measures">
                     <div className="height">
@@ -156,6 +154,28 @@ const Container = styled.div`
                 color: #B80000;
                 filter: drop-shadow(0 0 5px);
             }
+        }
+    }
+
+    @media(max-width: 750px) {
+        min-width: 45%;
+        max-width: 45%;
+
+        .backgroundPokeball {
+            width: 200px;
+        }
+    }
+
+    @media(max-width: 523px) {
+        min-width: 100%;
+        max-width: 100%;
+
+        .backgroundPokeball {
+            width: 200px;
+        }
+
+        .data {
+            width: 200px;
         }
     }
 `

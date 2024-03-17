@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useParams } from "react-router-dom"
 import { NavBar } from "../navBar";
 import styled from "styled-components";
@@ -8,6 +8,7 @@ import { PokemonStats } from "../pokemonStats";
 import { PokemonEvolution } from "../pokemonEvolution";
 import { PokemonPanel } from "../pokemonPanel";
 import backgroundPokeballs from '../../../images/background-pokeballs.png'
+import { MovementsAndAbilities } from "../movementsAndAbilities";
 
 export const Details = () => {
     const { id } = useParams();
@@ -21,6 +22,7 @@ export const Details = () => {
                 <div className="content" style={{ color: theme.color, backgroundColor: theme.secondaryColor }}>
                     <PokemonPanel id={id} />
                     <PokemonStats />
+                    <MovementsAndAbilities />
                     <PokemonEvolution />
                 </div>
             </Container>

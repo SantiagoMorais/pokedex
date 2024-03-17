@@ -85,8 +85,7 @@ export const PokemonImage = ({ listImages, pokemon, currentImage, setCurrentImag
                     : listImages.back_female);
         }
     }
-
-
+    
     return (
         <Container style={{backgroundColor: theme.secondaryColor}}>
             {currentImage &&
@@ -135,6 +134,7 @@ const Container = styled.div`
     position: relative;
     z-index: 2;
 
+
     .backgroundPokeball {
         position: absolute;
         width: 100%;
@@ -172,6 +172,25 @@ const Container = styled.div`
                 opacity: 1;
                 box-shadow: 0 0 10px;
             }
+        }
+    }
+    
+    @media (max-width: 750px) {
+        width: 100%;
+        align-items: center;
+
+        .backgroundPokeball {
+            width: 200px;
+        }
+
+        .pokemonImage {
+            width: 175px;
+        }
+    }
+
+    @media (max-width: 523px) {
+        .pokemonImage {
+            width: 150px;
         }
     }
 `

@@ -41,7 +41,6 @@ export const PokemonListByType = () => {
                             <FontAwesomeIcon icon={faUndoAlt} />
                             <p className="returnText">Return</p>
                         </button>
-
                         {typeList.map((pokemon, index) =>
                             <PokemonCard key={index} pokemonUrl={pokemon.pokemon.url} />
                         )}

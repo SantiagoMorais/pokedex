@@ -6,24 +6,21 @@ import { faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons"
 import { typesData } from "../pokemonTypes"
 import pokeballIcon from "../../../images/pokeball-icon.png"
 import { Link } from "react-router-dom"
-import { fetchPokemonByUrl } from "../../../services/fetchPokemonByUrl"
-import { fetchPokemonByName } from "../../../services/fetchPokemonByName"
+import { fetchPokemonData } from "../../../services/fetchPokemonData"
 
 export const PokemonCard = (props) => {
     const { theme } = useContext(ThemeContext);
     const [pokemon, setPokemon] = useState(null);
     const [isHovered, setIsHovered] = useState(false)
     const cardColor = typesData.find((typeData) => typeData.type === pokemon?.types[0].type.name)?.color;
-    const backImage = pokemon?.sprites.back_default;
-
 
     const getPokemonData = async () => {
         if (props.pokemonUrl) {
-            const response = await fetchPokemonByUrl(props.pokemonUrl);
-            setPokemon(response);
+            const {data} = await fetchPokemonData('', props.pokemonUrl);
+            setPokemon(data);
         } else if (props.pokemonName) {
-            const response = await fetchPokemonByName(props.pokemonName);
-            setPokemon(response.data)
+            const {data} = await fetchPokemonData(props.pokemonName);
+            setPokemon(data)
         } else if (props.pokemonData) {
             setPokemon(props.pokemonData);
         }
@@ -50,8 +47,6 @@ export const PokemonCard = (props) => {
             onMouseEnter={() => { setIsHovered(true) }}
             onMouseLeave={() => { setIsHovered(false) }}
         >
-
-
             <div className="image">
                 {pokemon?.sprites.front_default
                     ? <img
@@ -63,9 +58,7 @@ export const PokemonCard = (props) => {
                     </div>
                 }
             </div>
-
             <h3 className="name">{pokemon?.name} <span className="id">#{pokemon?.id}</span></h3>
-
             <div className="types">
                 {pokemon?.types.map((type, index) => {
                     const typeName = type.type.name;
@@ -179,7 +172,8 @@ const Container = styled.div`
 
     @media(max-width: 460px) {
         width: 150px;
-        min-height: 300px;
+        min-height: 250px;
+        gap:5px;
         padding: 10px;
 
         .name {

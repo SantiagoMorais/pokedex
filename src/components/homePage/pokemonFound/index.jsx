@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faX } from "@fortawesome/free-solid-svg-icons";
 import { ThemeContext } from "../../../contexts/themeContext";
 import styled from "styled-components";
-import { fetchPokemonByName } from "../../../services/fetchPokemonByName";
+import { fetchPokemonData } from "../../../services/fetchPokemonData";
 
 export const PokemonFound = () => {
     const { searchedPokemon } = useContext(PokemonListsContext);
@@ -21,7 +21,7 @@ export const PokemonFound = () => {
 
     const getPokemon = async (nameOrId) => {
         setItsLoading(true)
-        const { data, error } = await fetchPokemonByName(nameOrId)
+        const { data, error } = await fetchPokemonData(nameOrId)
         if (error) {
             setPokemonNotFound(true);
         } else {
@@ -40,7 +40,6 @@ export const PokemonFound = () => {
             {itsLoading === true &&
                 <p style={{ color: theme.color }}>Loading <FontAwesomeIcon icon={faSpinner} spin /></p>
             }
-            
             {!itsLoading &&
                 <>
                     {pokemonNotFound === true && (
@@ -56,8 +55,8 @@ export const PokemonFound = () => {
                         </>
                     )}
 
-                    {!pokemonNotFound && pokemon !== null && (
-                        <div>
+                    {!pokemonNotFound && pokemon !== null && 
+                        <>
                             <button
                                 style={{ color: theme.color }}
                                 onClick={() => handleReturnList()}
@@ -66,8 +65,8 @@ export const PokemonFound = () => {
                                 <FontAwesomeIcon icon={faX} />
                             </button>
                             <PokemonCard className="pokemonCard" pokemonData={pokemon} />
-                        </div>
-                    )}
+                        </>
+                    }
                 </>
             }
         </Container>

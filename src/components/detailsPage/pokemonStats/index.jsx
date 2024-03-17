@@ -5,7 +5,7 @@ import { Chart as Chart } from "chart.js/auto" //Do not remove this one
 import { Radar } from "react-chartjs-2"
 import { typesData } from "../../homePage/pokemonTypes"
 import { useParams } from "react-router-dom"
-import { fetchPokemonByName } from "../../../services/fetchPokemonByName"
+import { fetchPokemonData } from "../../../services/fetchPokemonData"
 
 export const PokemonStats = () => {
     const { theme } = useContext(ThemeContext)
@@ -15,7 +15,7 @@ export const PokemonStats = () => {
     const { id } = useParams();
 
     const getPokemon = async () => {
-        const { data } = await fetchPokemonByName(id);
+        const { data } = await fetchPokemonData(id);
         setPokemon(data)
         const baseStat = data.stats.map(stat => stat.base_stat)
 
@@ -153,14 +153,17 @@ const Container = styled.div`
                 width: 150px;
             }
         }
-
     }
 
     @media(max-width: 580px) {
         .chart {
-            position: relative;
             width: 300px;
         }
+    }
 
+    @media(max-width: 350px) {
+        .chart {
+            width: 250px;
+        }
     }
 `

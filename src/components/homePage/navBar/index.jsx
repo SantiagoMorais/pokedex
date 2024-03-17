@@ -1,17 +1,15 @@
 import styled from "styled-components"
 import pokemonLogo from "../../../images/pokemon-logo.png"
 import { useContext, useEffect, useState } from "react"
-import { ThemeContext, themes } from "../../../contexts/themeContext"
+import { ThemeContext } from "../../../contexts/themeContext"
 import { PokemonTypes } from "../pokemonTypes"
 import { ThemeTogglerButton } from "../../themeTogglerButton"
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { PokemonListsContext } from "../../../contexts/pokemonListsContext"
-import { Link } from "react-router-dom"
 
 export const NavBar = () => {
     const { theme } = useContext(ThemeContext)
-    const logoStyle = (theme === themes.light ? { filter: "invert(0%)" } : { filter: "invert(100%)" });
     const [searchField, setSearchField] = useState('')
     const {setSearchedPokemon, searchedPokemon} = useContext(PokemonListsContext)
 

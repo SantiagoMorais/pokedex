@@ -2,12 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { fetchPokemonBySpecie } from "../../../services/fetchPokemonBySpecie";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { fetchPokemonByUrl } from "../../../services/fetchPokemonByUrl";
 import { PokemonCard } from "../../homePage/pokemonCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { ThemeContext } from "../../../contexts/themeContext";
-import { fetchPokemonByName } from "../../../services/fetchPokemonByName";
+import { fetchPokemonData } from "../../../services/fetchPokemonData";
 import axios from "axios";
 
 export const PokemonEvolution = () => {
@@ -16,7 +15,7 @@ export const PokemonEvolution = () => {
     const [firstEvolution, setFirstEvolution] = useState(null);
     const [secondEvolution, setSecondEvolution] = useState([]);
     const [thirdEvolution, setThirdEvolution] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const { id } = useParams();
 
     const getEvolutionData = async (id) => {
@@ -30,27 +29,31 @@ export const PokemonEvolution = () => {
             setIsLoading(false);
             return
         }
-
+        //Some pokémons name when searched in the species data, is abreviate (Ex: 'Wormadam-Plant', in the species data is returned just 'Wormadam'). So when we search its data using that name, the API alerts an error. So its necessary take the full name of the pokémon from the database using the code below. If that problem does't exist, that code would be shorter.
         const url = res.evolution_chain.url;
-        const evolutionData = await fetchPokemonByUrl(url)
+        const evolutionData = await fetchPokemonData('', url)
 
-        const firstEvolutionName = evolutionData.chain.species.name;
-        setFirstEvolution(firstEvolutionName)
+        const firstEvolutionUrl = evolutionData.data.chain.species.url;
+        const firstEvolutionSpecies = await fetchPokemonBySpecie('', firstEvolutionUrl);
+        const firstEvolutionId = firstEvolutionSpecies.id;
+        const {data} = await fetchPokemonData(firstEvolutionId);
+        setFirstEvolution(data.name);
+
 
         const getsecondEvolutionName = async () => {
-            const secondEvolutionsPromises = evolutionData.chain?.evolves_to.map(async (evolution) => {
+            const secondEvolutionsPromises = evolutionData.data.chain?.evolves_to.map(async (evolution) => {
                 const url = evolution.species.url;
                 const species = await fetchPokemonBySpecie('', url);
                 const id = species.id;
-                const { data } = await fetchPokemonByName(id);
+                const { data } = await fetchPokemonData(id);
 
                 if (evolution?.evolves_to.length > 0) {
-                    const getthirdEvolutionName = async () => {
+                    const getThirdEvolutionName = async () => {
                         const thirdEvolutionsPromises = evolution?.evolves_to.map(async (evolution) => {
                             const url = evolution.species.url;
                             const species = await fetchPokemonBySpecie('', url);
                             const id = species.id;
-                            const { data } = await fetchPokemonByName(id);
+                            const { data } = await fetchPokemonData(id);
                             return data.name;
                         });
 
@@ -61,10 +64,8 @@ export const PokemonEvolution = () => {
                             console.log(`error to getting the name of Pokémon evolutions: ${err}`);
                         }
                     };
-
-                    getthirdEvolutionName();
+                    getThirdEvolutionName();
                 }
-
                 return data.name;
             });
 
@@ -83,17 +84,13 @@ export const PokemonEvolution = () => {
     useEffect(() => {
         getEvolutionData(id)
     }, [id])
-
-    if (!firstEvolution) return
     
     return (
         <Container style={{ color: theme.color }}>
             <h2 className="title"> Line of evolution </h2>
-
             {isLoading &&
                 <p className="isLoading" style={{ color: theme.color }}>Loading <FontAwesomeIcon icon={faSpinner} spin /></p>
             }
-
             <div className="cards">
                 {firstEvolution !== null &&
                     <div className="pokemon">
@@ -107,7 +104,6 @@ export const PokemonEvolution = () => {
                         </div>
                     </div>
                 }
-
                 {secondEvolution.length > 0 &&
                     <div className="pokemon">
                         <div className="label">
@@ -124,7 +120,6 @@ export const PokemonEvolution = () => {
                         </div>
                     </div>
                 }
-
                 {thirdEvolution.length > 0 &&
                     <div className="pokemon">
                         <div className="label">
@@ -139,7 +134,6 @@ export const PokemonEvolution = () => {
                         </div>
                     </div>
                 }
-
             </div>
         </Container>
     )

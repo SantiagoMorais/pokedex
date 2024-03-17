@@ -13,7 +13,10 @@ export const Lists = () => {
     const { theme } = useContext(ThemeContext)
 
     const scrollToTop = () => {
-        window.scrollTo(0, 0);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',   
+        });
     }
 
     return (
@@ -62,7 +65,7 @@ const Container = styled.section`
         cursor: pointer;
         position: fixed;
         right: 10px;
-        bottom: -25px;
+        bottom: 0px;
         background: none;
         border: none;
 
@@ -73,8 +76,6 @@ const Container = styled.section`
 
         &:hover {
             opacity: 1;
-            transform: translateY(-25px);
-
         }
     }
 `

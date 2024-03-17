@@ -13,7 +13,6 @@ export const PokemonListByType = () => {
     const icon = typesData.find(type => type.type === currentType)?.icon;
     const color = typesData.find(type => type.type === currentType)?.color
 
-    console.log(typeList);
     const handleReturnList = () => {
         setTypeList([]);
         setCurrentType('');

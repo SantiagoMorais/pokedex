@@ -7,11 +7,13 @@ import { PokemonCard } from "../../homePage/pokemonCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { ThemeContext } from "../../../contexts/themeContext";
+import { fetchPokemonByName } from "../../../services/fetchPokemonByName";
+import axios from "axios";
 
 export const PokemonEvolution = () => {
-    const { theme } = useContext(ThemeContext)
+    const { theme } = useContext(ThemeContext);
 
-    const [firstEvolution, setFirstEvolution] = useState(null)
+    const [firstEvolution, setFirstEvolution] = useState(null);
     const [secondEvolution, setSecondEvolution] = useState([]);
     const [thirdEvolution, setThirdEvolution] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -24,29 +26,57 @@ export const PokemonEvolution = () => {
         setThirdEvolution([]);
 
         const res = await fetchPokemonBySpecie(id);
+        if (!res) {
+            setIsLoading(false);
+            return
+        }
+
         const url = res.evolution_chain.url;
         const evolutionData = await fetchPokemonByUrl(url)
 
-        const firstEvolutionsName = evolutionData.chain.species.name
-        setFirstEvolution(firstEvolutionsName)
+        const firstEvolutionName = evolutionData.chain.species.name;
+        setFirstEvolution(firstEvolutionName)
 
-        const secondEvolutionsName = [];
-        const thirdEvolutionsName = [];
+        const getsecondEvolutionName = async () => {
+            const secondEvolutionsPromises = evolutionData.chain?.evolves_to.map(async (evolution) => {
+                const url = evolution.species.url;
+                const species = await fetchPokemonBySpecie('', url);
+                const id = species.id;
+                const { data } = await fetchPokemonByName(id);
 
-        evolutionData.chain?.evolves_to.map(evolution => {
-            const name = evolution.species.name;
-            secondEvolutionsName.push(name)
+                if (evolution?.evolves_to.length > 0) {
+                    const getthirdEvolutionName = async () => {
+                        const thirdEvolutionsPromises = evolution?.evolves_to.map(async (evolution) => {
+                            const url = evolution.species.url;
+                            const species = await fetchPokemonBySpecie('', url);
+                            const id = species.id;
+                            const { data } = await fetchPokemonByName(id);
+                            return data.name;
+                        });
 
-            if (evolution.evolves_to.length > 0) {
-                evolution.evolves_to.map(newEvolution => {
-                    const name = newEvolution.species.name;
-                    thirdEvolutionsName.push(name);
-                })
+                        try {
+                            const thirdEvolution = await axios.all(thirdEvolutionsPromises);
+                            setThirdEvolution(thirdEvolution);
+                        } catch (err) {
+                            console.log(`error to getting the name of Pokémon evolutions: ${err}`);
+                        }
+                    };
+
+                    getthirdEvolutionName();
+                }
+
+                return data.name;
+            });
+
+            try {
+                const secondEvolution = await axios.all(secondEvolutionsPromises);
+                setSecondEvolution(secondEvolution);
+            } catch (err) {
+                console.log(`error to getting the name of Pokémon evolutions: ${err}`);
             }
-        })
+        }
 
-        if (secondEvolutionsName.length > 0) setSecondEvolution(secondEvolutionsName)
-        if (thirdEvolutionsName.length > 0) setThirdEvolution(thirdEvolutionsName)
+        getsecondEvolutionName();
         setIsLoading(false);
     }
 
@@ -54,14 +84,16 @@ export const PokemonEvolution = () => {
         getEvolutionData(id)
     }, [id])
 
+    if (!firstEvolution) return
+    
     return (
         <Container style={{ color: theme.color }}>
             <h2 className="title"> Line of evolution </h2>
 
             {isLoading &&
-                <p className="isLoading" style={{color: theme.color}}>Loading <FontAwesomeIcon icon={faSpinner} spin/></p>
+                <p className="isLoading" style={{ color: theme.color }}>Loading <FontAwesomeIcon icon={faSpinner} spin /></p>
             }
-            
+
             <div className="cards">
                 {firstEvolution !== null &&
                     <div className="pokemon">
@@ -129,7 +161,12 @@ const Container = styled.div`
         width: 100%;
         text-align: center;
         padding: 20px;
-        font-size: 25px;
+        font-size: 38px;
+        height: 370px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
     }
 
     .cards {
@@ -162,7 +199,7 @@ const Container = styled.div`
             justify-content: center;
             align-items: center;
             gap: 5px;
-            width: 200px;
+            width: 100%;
 
             .icon {
                 font-size: 10px;
@@ -171,9 +208,22 @@ const Container = styled.div`
             .text {
                 font-size: 20px;
                 text-align: center;
-        
-                .pokemonsName {
-                    text-transform: capitalize;
+            }
+        }
+    }
+
+    @media(max-width: 460px) {
+        .title {
+            font-size: 26px;
+        }
+
+        .cards {
+            .label {
+                .icon {
+                    font-size: 8px;
+                }
+                .text {
+                    font-size: 14px;
                 }
             }
         }

@@ -10,91 +10,80 @@ export const PokemonImage = ({ listImages, pokemon, currentImage, setCurrentImag
 
     const rotateImage = () => {
         if (currentImage === null) return;
-        let newImage = null;
 
         if (currentImage === listImages.front_default || currentImage === listImages.back_default) {
-            newImage =
+            setCurrentImage(
                 currentImage === listImages.front_default
                     ? listImages.back_default
-                    : listImages.front_default;
+                    : listImages.front_default);
         } else if (currentImage === listImages.front_female || currentImage === listImages.back_female) {
-            newImage =
+            setCurrentImage(
                 currentImage === listImages.front_female
                     ? listImages.back_female
-                    : listImages.front_female;
+                    : listImages.front_female);
         } else if (currentImage === listImages.front_shiny || currentImage === listImages.back_shiny) {
-            newImage =
+            setCurrentImage(
                 currentImage === listImages.front_shiny
                     ? listImages.back_shiny
-                    : listImages.front_shiny;
+                    : listImages.front_shiny);
         } else {
-            newImage =
+            setCurrentImage(
                 currentImage === listImages.front_shiny_female
                     ? listImages.back_shiny_female
-                    : listImages.front_shiny_female;
-        }
-
-        setCurrentImage(newImage);
+                    : listImages.front_shiny_female);
+        };
     }
 
     const changeGender = () => {
         if (currentImage === null) return;
-        let newImage = null;
 
         if (currentImage === listImages.front_default || currentImage === listImages.front_female) {
-            newImage =
+            setCurrentImage(
                 currentImage === listImages.front_default
                     ? listImages.front_female
-                    : listImages.front_default;
+                    : listImages.front_default)
         } else if (currentImage === listImages.front_shiny || currentImage === listImages.front_shiny_female) {
-            newImage =
+            setCurrentImage(
                 currentImage === listImages.front_shiny
                     ? listImages.front_shiny_female
-                    : listImages.front_shiny;
+                    : listImages.front_shiny)
         } else if (currentImage === listImages.back_default || currentImage === listImages.back_female) {
-            newImage =
+            setCurrentImage(
                 currentImage === listImages.back_default
                     ? listImages.back_female
-                    : listImages.back_default;
+                    : listImages.back_default)
         } else {
-            newImage =
-
+            setCurrentImage(
                 currentImage === listImages.back_shiny
                     ? listImages.back_shiny_female
-                    : listImages.back_shiny;
+                    : listImages.back_shiny);
         }
-
-        setCurrentImage(newImage);
     }
 
     const changeToShiny = () => {
         if (currentImage === null) return;
 
-        let newImage = null;
-
         if (currentImage === listImages.front_default || currentImage === listImages.front_shiny) {
-            newImage =
+            setCurrentImage(
                 currentImage === listImages.front_default
                     ? listImages.front_shiny
-                    : listImages.front_default;
+                    : listImages.front_default);
         } else if (currentImage === listImages.back_default || currentImage === listImages.back_shiny) {
-            newImage =
+            setCurrentImage(
                 currentImage === listImages.back_default
                     ? listImages.back_shiny
-                    : listImages.back_default;
+                    : listImages.back_default);
         } else if (currentImage === listImages.front_female || currentImage === listImages.front_shiny_female) {
-            newImage =
+            setCurrentImage(
                 currentImage === listImages.front_female
                     ? listImages.front_shiny_female
-                    : listImages.front_female;
+                    : listImages.front_female);
         } else {
-            newImage =
+            setCurrentImage(
                 currentImage === listImages.back_female
                     ? listImages.back_shiny_female
-                    : listImages.back_female;
+                    : listImages.back_female);
         }
-
-        setCurrentImage(newImage);
     }
 
 

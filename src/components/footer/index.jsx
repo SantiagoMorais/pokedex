@@ -22,22 +22,22 @@ export const Footer = () => {
                     <p>Find me on my social media:</p>
                 </div>
                 <ul className="social">
-                        <li>
-                            <a href="https://www.linkedin.com/in/felipe-santiago-morais/" target="_blank" title="Linkedin">
-                                <FontAwesomeIcon icon={faLinkedin} style={{ color: theme.color }} className="socialIcon"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/SantiagoMorais" target="_blank" title="Github">
-                                <FontAwesomeIcon icon={faGithub} style={{ color: theme.color }} className="socialIcon"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="mailto:contatofelipesantiago@gmail.com" target="_blank" title="Email">
-                                <FontAwesomeIcon icon={faAt} style={{ color: theme.color }} className="socialIcon"/>
-                            </a>
-                        </li>
-                    </ul>
+                    <li>
+                        <a href="https://www.linkedin.com/in/felipe-santiago-morais/" target="_blank" title="Linkedin">
+                            <FontAwesomeIcon icon={faLinkedin} style={{ color: theme.color }} className="socialIcon" />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/SantiagoMorais" target="_blank" title="Github">
+                            <FontAwesomeIcon icon={faGithub} style={{ color: theme.color }} className="socialIcon" />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:contatofelipesantiago@gmail.com" target="_blank" title="Email">
+                            <FontAwesomeIcon icon={faAt} style={{ color: theme.color }} className="socialIcon" />
+                        </a>
+                    </li>
+                </ul>
             </div>
         </Container>
     )
@@ -46,8 +46,7 @@ export const Footer = () => {
 const Container = styled.div`
     display: flex;
     justify-content: center;
-    padding: 10px;
-
+    padding: 20px;
     
     .footer {
         max-width: 1080px;
@@ -85,6 +84,17 @@ const Container = styled.div`
                 &:hover {
                     filter: drop-shadow(0 0 10px);
                 }
+            }
+        }
+    }
+
+    @media(max-width: 768px) {
+        .footer {
+            flex-direction: column;
+            gap: 15px;
+
+            .creator {
+                text-align: center;
             }
         }
     }

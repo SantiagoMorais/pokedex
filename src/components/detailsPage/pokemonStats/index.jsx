@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import { ThemeContext } from "../../../contexts/themeContext"
-import { Chart as Chart } from "chart.js/auto"
 import { Radar } from "react-chartjs-2"
 import { typesData } from "../../homePage/pokemonTypes"
 import { useParams } from "react-router-dom"
@@ -23,8 +22,8 @@ export const PokemonStats = () => {
             // setting the first letter of every stat to upper case
             return stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1);
         })
-        
-        setPokemonStats({baseStat, statLabels})
+
+        setPokemonStats({ baseStat, statLabels })
     }
 
     useEffect(() => {
@@ -36,62 +35,65 @@ export const PokemonStats = () => {
             <div className="chart">
                 {pokemon !== null &&
                     <>
-                    <Radar
-                        style={{ color: theme.color }}
-                        data={{
-                            labels: pokemonStats.statLabels,
-                            datasets: [
-                                {
-                                    label: "Stat",
-                                    data: pokemonStats.baseStat,
-                                    pointBackgroundColor: theme.color,
-                                    pointBorderColor: theme.color,
-                                    pointRadius: 6,
-                                    borderColor: pokemonTypeColor,
-                                }
-                            ],
-                        }}
-                        options={{
-                            scales: {
-                                r: {
-                                    suggestedMin: 0,
-                                    suggestedMax: 150,
-                                    ticks: {
-                                        font: {
-                                            size: 16,
-                                        }
-                                    },
-                                    grid: {
-                                        color: "rgba(120,120,120,0.5)",
-                                        
-                                    },
-                                    pointLabels: {
-                                        font: {
-                                            size: 16,
-                                        }
+                        <Radar
+                            style={{ color: theme.color }}
+                            data={{
+                                labels: ["Hp", "Att", "Def", "Sp.Att", "Sp.Def", "Speed"],
+                                datasets: [
+                                    {
+                                        label: "Stat",
+                                        data: pokemonStats.baseStat,
+                                        pointBackgroundColor: theme.color,
+                                        pointBorderColor: theme.color,
+                                        pointRadius: window.innerWidth <= 580 ? 4 : 6,
+                                        borderColor: pokemonTypeColor,
                                     }
-                                },
-                            },
-                            plugins: {
-                                legend: {
-                                    display: false // Isso remove a legenda do gráfico
-                                },
-                                title: {
-                                    display: true,
-                                    text: "Pokemon Stats:",
-                                    font: {
-                                        size: 28, // Tamanho da fonte do título
+                                ],
+                            }}
+                            options={{
+                                scales: {
+                                    r: {
+                                        suggestedMin: 0,
+                                        suggestedMax: 200,
+                                        ticks: {
+                                            font: {
+                                                size: window.innerWidth <= 580 ? 12 : 16,
+                                            },
+                                            count: 6,
+                                        },
+                                        grid: {
+                                            color: "rgba(120,120,120,0.5)",
+                                        },
+                                        pointLabels: {
+                                            font: {
+                                                size: window.innerWidth <= 580 ? 12 : 16,
+                                            },
+                                            color: pokemonTypeColor,
+                                        }
                                     },
                                 },
-                            }, 
-                        }}
-                    />
+                                plugins: {
+                                    legend: {
+                                        display: false,
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: "Pokemon Stats:",
+                                        font: {
+                                            size: window.innerWidth <= 580 ? 20 : 28,
+                                        },
+                                    },
+                                },
+                            }}
+                        />
                     </>
                 }
             </div>
             <div className="pokemonStats">
-                {pokemonStats?.statLabels?.map((stat, index) => 
-                    <p>{stat}: <span style={{color: pokemonTypeColor}}>{pokemonStats.baseStat[index]}</span></p>
+                {pokemonStats?.statLabels?.map((stat, index) =>
+                    <div className="stats" key={index}>
+                        {stat}: <span style={{ color: pokemonTypeColor }}>{pokemonStats.baseStat[index]}</span>
+                    </div>
                 )}
             </div>
         </Container>
@@ -108,6 +110,9 @@ const Container = styled.div`
 
     .chart {
         width: 600px;
+        height: auto;
+        display: flex;
+        justify-content: center;
     }
 
     .pokemonStats {
@@ -116,11 +121,45 @@ const Container = styled.div`
         gap: 15px;
         glex-wrap: wrap;
 
-        p {
+        .stats {
             border: 1px solid;
             border-radius: 8px;
             padding: 5px;
             text-align: center;
+            
+            span {
+                font-weight: 700;
+            }
         }
+    }
+
+    @media(max-width: 900px) {
+        flex-direction: column;
+        align-items: center;
+
+        .chart {
+            width: 500px;
+        }
+
+        .pokemonStats {
+            width: 100%;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: center;
+
+            .stats {
+                font-size: 14px;
+                width: 150px;
+            }
+        }
+
+    }
+
+    @media(max-width: 580px) {
+        .chart {
+            position: relative;
+            width: 300px;
+        }
+
     }
 `

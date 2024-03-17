@@ -33,8 +33,7 @@ const Container = styled.section`
 
     .backgroundImage {
         position: absolute;
-        background: url(${backgroundPokeballs}) no-repeat center center;
-        background-size: cover;
+        background: url(${backgroundPokeballs}) repeat;
         top: 0;
         left: 0;
         width: 100%;

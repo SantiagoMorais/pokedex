@@ -3,12 +3,11 @@ import styled from "styled-components";
 import { fetchPokemonByName } from "../../../services/fetchPokemonByName";
 import { ThemeContext } from "../../../contexts/themeContext";
 import { Link, useParams } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { typesData } from "../../homePage/pokemonTypes";
 import { PokemonImage } from "../pokemonImage";
 import { fetchPokemonBySpecie } from "../../../services/fetchPokemonBySpecie";
 import { Measures } from "../measures";
+import { ChangePokemonPage } from "../changePokemonPage";
 
 export const PokemonPanel = () => {
     const { theme } = useContext(ThemeContext)
@@ -17,24 +16,30 @@ export const PokemonPanel = () => {
     const [currentImage, setCurrentImage] = useState(null);
     const [pokemonDescription, setPokemonDescription] = useState('');
     const [speciesData, setSpeciesData] = useState(null);
+    const [lastPokemon, setLastPokemon] = useState(false)
     const { id } = useParams();
 
-    const previousPage = pokemon?.id > 1 ? pokemon?.id - 1 : pokemon?.id;
-    const nextPage = pokemon?.id + 1;
     const pokemonTypeColor = typesData.find((typeData) => typeData.type === pokemon?.types[0].type.name)?.color;
 
     const getPokemon = async () => {
         const { data } = await fetchPokemonByName(id);
+        setLastPokemon(false);
         setPokemon(data);
         setListImages(data.sprites)
         setCurrentImage(data.sprites.front_default)
     }
 
     const getSpeciesData = async () => {
-        const response = await fetchPokemonBySpecie(id)
-        const englishDescription = response.flavor_text_entries.find(en => en.language.name === 'en')?.flavor_text
-        setPokemonDescription(englishDescription)
-        setSpeciesData(response);
+        setLastPokemon(false);
+        await fetchPokemonBySpecie(id)
+            .then((res) => {
+                const englishDescription = res.flavor_text_entries.find(en => en.language.name === 'en')?.flavor_text
+                setPokemonDescription(englishDescription)
+                setSpeciesData(res);
+            })
+            .catch(() => {
+                setLastPokemon(true);
+            })
     }
 
     useEffect(() => {
@@ -44,35 +49,21 @@ export const PokemonPanel = () => {
 
     return (
         <Container style={{ color: theme.color }}>
+            {lastPokemon &&
+                <>
+                    <p className="lastPokemon">We found an error finding the Pokémon #{id}. This one probably don't exist or that was the last Pokémon of the list! 😉</p>
+                    <Link to={`/`}>
+                        <p className="lastPokemon return" style={{ color: theme.color }}>Return to the first page</p>
+                    </Link>
+                </>
+            }
+
             {pokemon !== null &&
                 <>
-                    <div className="changePokemonsPage">
-                        <Link to={`/pokemon/${previousPage}`}>
-                            <button
-                                style={{
-                                    color: theme.color,
-                                    backgroundColor: pokemonTypeColor,
-                                }}
-                                className="previousPokemon">
-                                <FontAwesomeIcon icon={faCaretLeft} />
-                                <p>Previous Pokemon</p>
-                            </button>
-                        </Link>
-                        <h1 className="name" >{pokemon.name} <span className="id">#{pokemon.id}</span></h1>
-                        <Link to={`/pokemon/${nextPage}`}>
-                            <button
-                                style={{
-                                    color: theme.color,
-                                    backgroundColor: pokemonTypeColor,
-                                }}
-                                className="nextPokemon">
-                                <p>Next Pokemon</p>
-                                <FontAwesomeIcon icon={faCaretRight} />
-                            </button>
-                        </Link>
-                    </div>
+                    <ChangePokemonPage pokemon={pokemon}/>
 
                     <div className="details">
+                        <div className="backgroundColor" style={{ backgroundColor: pokemonTypeColor }}></div>
                         <div className="image" style={{ backgroundColor: theme.secondaryColor }}>
                             <PokemonImage
                                 listImages={listImages}
@@ -83,9 +74,9 @@ export const PokemonPanel = () => {
                             />
                         </div>
                         <div className="description">
-                            <p>{pokemonDescription ? pokemonDescription : <p>No Description 🤷🏽‍♂️</p>}</p>
+                            <div>{pokemonDescription ? pokemonDescription : <p>No Description 🤷🏽‍♂️</p>}</div>
                         </div>
-                        <div className="backgroundColor" style={{ backgroundColor: pokemonTypeColor }}></div>
+
                         <Measures pokemon={pokemon} speciesData={speciesData} />
                     </div>
                 </>
@@ -100,42 +91,23 @@ const Container = styled.div`
     align-items: center;
     justify-content: center; 
     gap: 20px;
-    
-    .changePokemonsPage {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        align-items: center;
-        margin-bottom: 20px;
 
-        .previousPokemon, .nextPokemon {
-            cursor: pointer;
-            padding: 10px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            border: 1px solid;
-            border-radius: 8px;
-            font-size: 16px;
-            opacity: .8;
-            transition: .3s;
+    .lastPokemon {
+        font-size: 20px;
+        max-width: 450px;
+        text-align: center;
+    }
 
-            &:hover {
-                box-shadow: 0 0 10px;
-                opacity: 1;
-            }
+    .lastPokemon.return {
+        opacity: .6;
+        font-weight: 600;
+        transition: .3s;
+        padding: 8px;
+
+        &:hover {
+            opacity: 1;
+            filter: drop-shadow(0 0 10px);
         }
-
-            .name {
-                text-transform: capitalize;
-                font-size: 28px;
-                transition: .3s;
-
-                .id {
-                    opacity: .6;
-                    font-size: 20px;
-                }
-            }
     }
 
     .details {
@@ -149,6 +121,7 @@ const Container = styled.div`
         position: relative;
         overflow: hidden;
         transition: .3s;
+        justify-content: center;
 
         .image {
             border-radius: 8px;
@@ -159,10 +132,10 @@ const Container = styled.div`
             justify-content: center;
             align-items: center;
             height: 100%;
-            width: 100%;
             text-align: center;
+            min-width: 235px;
 
-            p {
+            div {
                 font-size: 20px;
             }
         }
@@ -178,4 +151,29 @@ const Container = styled.div`
         opacity: .3;
         transition: .3s;
     }
+
+    @media(max-width: 750px) {
+        .changePokemonsPage {
+            .name {
+                font-size: 20px;
+            }
+        }
+
+        .details {
+            width: fit-content;
+            flex-wrap: wrap;
+
+
+            .description {
+                width: 235px;
+                order: 3;
+            }
+
+        }
+    }
+
+    @media(max-width: 450px) {
+
+    }
+
 `

@@ -1,8 +1,8 @@
 import axios from "axios"
 
-export const fetchPokemonBySpecie = async (pokemonId) => {
+export const fetchPokemonBySpecie = async (pokemonId, url) => {
     return await axios
-        .get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`)
+        .get(pokemonId ? `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/` : url)
         .then(res => {
             return res.data
         })

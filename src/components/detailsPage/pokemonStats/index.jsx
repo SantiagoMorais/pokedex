@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import { ThemeContext } from "../../../contexts/themeContext"
+import { Chart as Chart } from "chart.js/auto" //Do not remove this one
 import { Radar } from "react-chartjs-2"
 import { typesData } from "../../homePage/pokemonTypes"
 import { useParams } from "react-router-dom"

@@ -124,7 +124,7 @@ const Container = styled.div`
         position: relative;
         overflow: hidden;
         transition: .3s;
-        justify-content: center;
+        justify-content: space-between;
 
         .image {
             border-radius: 8px;
@@ -171,6 +171,7 @@ const Container = styled.div`
         .details {
             width: fit-content;
             flex-wrap: wrap;
+            justify-content: center;
 
             .image {
                 width: 50%;

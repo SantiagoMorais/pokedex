@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import { ThemeContext } from "../../../contexts/themeContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faMagnifyingGlass, faPlus } from "@fortawesome/free-solid-svg-icons"
+import { faMagnifyingGlass, faPlus, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import { typesData } from "../pokemonTypes"
 import pokeballIcon from "../../../images/pokeball-icon.png"
 import { Link } from "react-router-dom"
@@ -16,10 +16,10 @@ export const PokemonCard = (props) => {
 
     const getPokemonData = async () => {
         if (props.pokemonUrl) {
-            const {data} = await fetchPokemonData('', props.pokemonUrl);
+            const { data } = await fetchPokemonData('', props.pokemonUrl);
             setPokemon(data);
         } else if (props.pokemonName) {
-            const {data} = await fetchPokemonData(props.pokemonName);
+            const { data } = await fetchPokemonData(props.pokemonName);
             setPokemon(data)
         } else if (props.pokemonData) {
             setPokemon(props.pokemonData);
@@ -42,57 +42,57 @@ export const PokemonCard = (props) => {
     }
 
     return (
-        <Container
-            style={isHovered ? { ...baseStyle, ...hoverStyle } : baseStyle}
-            onMouseEnter={() => { setIsHovered(true) }}
-            onMouseLeave={() => { setIsHovered(false) }}
-        >
-            <div className="image">
-                {pokemon?.sprites.front_default
-                    ? <img
-                        src={ pokemon?.sprites.front_default }
-                        alt={`Pokemon ${pokemon?.name}`} />
-                    : <div className="pokemonImageNotFound">
-                        <img src={pokeballIcon} alt={`Pokemon ${pokemon?.name} not found`} />
-                        <p>Image not found <FontAwesomeIcon icon={faMagnifyingGlass} /></p>
-                    </div>
-                }
-            </div>
-            <h3 className="name">{pokemon?.name} <span className="id">#{pokemon?.id}</span></h3>
-            <div className="types">
-                {pokemon?.types.map((type, index) => {
-                    const typeName = type.type.name;
-                    const typeColor = typesData.find((typeData) => typeData.type === typeName)?.color;
-                    return (
-                        <div className="type" key={index} style={{ backgroundColor: typeColor }}>
-                            <p>{typeName}</p>
+        <Link to={`/pokemon/${pokemon?.id}`}>
+            <Container
+                style={isHovered ? { ...baseStyle, ...hoverStyle } : baseStyle}
+                onMouseEnter={() => { setIsHovered(true) }}
+                onMouseLeave={() => { setIsHovered(false) }}
+            >
+                <div className="image">
+                    {pokemon?.sprites.front_default
+                        ? <img
+                            src={pokemon?.sprites.front_default}
+                            alt={`Pokemon ${pokemon?.name}`} />
+                        : <div className="pokemonImageNotFound">
+                            <img src={pokeballIcon} alt={`Pokemon ${pokemon?.name} not found`} />
+                            <p>Image not found <FontAwesomeIcon icon={faMagnifyingGlass} /></p>
                         </div>
-                    )
-                })}
-            </div>
-            <div className="measures">
-                <div className="height">
-                    <p>Height:</p>
-                    <p>{pokemon?.height / 10}m</p>
+                    }
                 </div>
-                <div className="weight">
-                    <p>Weight:</p>
-                    <p>{pokemon?.weight / 10}kg</p>
+                <h3 className="name">{pokemon?.name} <span className="id">#{pokemon?.id}</span></h3>
+                <div className="types">
+                    {pokemon?.types.map((type, index) => {
+                        const typeName = type.type.name;
+                        const typeColor = typesData.find((typeData) => typeData.type === typeName)?.color;
+                        return (
+                            <div className="type" key={index} style={{ backgroundColor: typeColor }}>
+                                <p>{typeName}</p>
+                            </div>
+                        )
+                    })}
                 </div>
-            </div>
-            <Link to={`/pokemon/${pokemon?.id}`}>
-                <button
+                <div className="measures">
+                    <div className="height">
+                        <p>Height:</p>
+                        <p>{pokemon?.height? pokemon.height / 10 + 'm': <FontAwesomeIcon icon={faSpinner} spin />}</p>
+                    </div>
+                    <div className="weight">
+                        <p>Weight:</p>
+                        <p>{pokemon?.weight ? pokemon.weight / 10 + 'kg' : <FontAwesomeIcon icon={faSpinner} spin />}</p>
+                    </div>
+                </div>
+
+                <div
                     style={{
                         color: theme.color,
                         backgroundColor: theme.secondaryColor,
-                        transition: ".3s"
                     }}
                     className="moreDetails"
                 >
-                    More details <FontAwesomeIcon icon={faPlus} />
-                </button>
-            </Link>
-        </Container>
+                    <FontAwesomeIcon icon={faPlus} /> Click to details
+                </div>
+            </Container>
+        </Link>
     )
 }
 
@@ -107,6 +107,7 @@ const Container = styled.div`
     justify-content: space-between;
     padding: 15px;
     position: relative;
+    cursor: pointer;
 
     .image {
         .pokemonImageNotFound {
@@ -136,6 +137,7 @@ const Container = styled.div`
         display: flex;
         gap: 10px;
         text-transform: capitalize;
+        margin-top: 10px;
 
         .type {
             padding: 3px;
@@ -147,6 +149,7 @@ const Container = styled.div`
     .measures {
         width: 100%;
         padding: 0 20px;
+        margin-top: 10px;
 
         .height, .weight {
             display:flex;
@@ -163,11 +166,15 @@ const Container = styled.div`
         opacity: .6;
         transition: .3s;
         margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+    }
 
-        &:hover {
-            opacity: 1;
-            box-shadow: 0 0 5px;
-        }
+    &:hover > .moreDetails {
+        opacity: .8;
+        box-shadow: 0 0 10px;
     }
 
     @media(max-width: 460px) {

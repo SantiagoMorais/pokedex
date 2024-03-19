@@ -98,4 +98,20 @@ const Container = styled.div`
             }
         }
     }
+
+    @media(max-width: 300px) {
+        .footer {
+            .pokemonLogo {
+                height: 40px;
+            }
+
+            .creator {
+                font-size: 12px;
+            }
+
+            .social {
+                font-size: 24px;
+            }
+        }
+    }
 `

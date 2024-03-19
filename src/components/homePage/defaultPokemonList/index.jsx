@@ -125,6 +125,7 @@ const Container = styled.section`
         display: flex;
         justify-content: center;
         align-items: center;
+        gap: 5px;
     }
 
     @media(max-width: 460px) {

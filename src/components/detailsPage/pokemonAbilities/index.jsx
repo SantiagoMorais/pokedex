@@ -12,14 +12,13 @@ export const PokemonAbilities = ({ url, pokemon }) => {
     const pokemonTypeColor = typesData.find((typeData) => typeData.type === pokemon?.types[0].type.name)?.color;
 
     const getPokemonAbilities = async () => {
-
         const { data } = await fetchPokemonData('', url);
         setAbility(data)
     }
 
     useEffect(() => {
         getPokemonAbilities();
-    }, [id])
+    }, [ability])
 
     return (
         <Container style={{ color: theme.color }}>

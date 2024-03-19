@@ -21,7 +21,7 @@ export const PokemonMoves = ({ url, pokemon }) => {
 
     useEffect(() => {
         getPokemonMoves();
-    }, [id])
+    }, [move])
 
     return (
         <Container style={{ color: theme.color }}>

@@ -115,7 +115,10 @@ const Container = styled.section`
     @media(max-width: 460px) {
         .pokemons {
             gap: 10px;
-            padding: 0;
+
+            .title {
+                margin-bottom: 10px;
+            }
         }
     }
 `

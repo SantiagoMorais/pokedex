@@ -4,7 +4,7 @@
 
 [Clique aqui para visualizar a página do projeto no ar](https://pokedex-with-pokeapi.vercel.app).
 
-<img src="./src/screenshots/project-completed.png" alt="desktop preview">
+<img src="./src/assets/screenshots/project-completed.png" alt="desktop preview">
 
 ## Sumário
 
@@ -115,7 +115,7 @@ const loadMorePokemons = async (pokemonsNumber) => {
 
 O resultado foi este:
 
-<img src="./src/screenshots/loading-pokemons.gif" alt="Procurando mais pokemons" title="Gif do projeto" width=80%>
+<img src="./src/assets/screenshots/loading-pokemons.gif" alt="Procurando mais pokemons" title="Gif do projeto" width=80%>
 
 ### 3. Página de detalhes do pokémon.
 
@@ -156,7 +156,7 @@ return (
 ```
 Esta nova página contém o painel do pokémon, com sua foto, alguns dados e sua descrição. Também é apresentados os dados de vida, ataque , defesa, entre outros (criado com [ChartJS](https://www.chartjs.org/docs/latest/)), seus movimentos e abilidade e sua linha de evolução, quando existir. Este é o resultado:
 
-<img src="./src/screenshots/details-page.gif" alt="Detalhes do pokemons" title="Gif do projeto" width=80%>
+<img src="./src/assets/screenshots/details-page.gif" alt="Detalhes do pokemons" title="Gif do projeto" width=80%>
 
 ### 4. Theme Toggler Button (Botão alternador de temas)
 
@@ -189,7 +189,7 @@ export const ThemeProvider = (props) => {
     )
 }
 ```
-<img src="./src/screenshots/theme-toggler-button.gif" alt="theme toggler button" title="Gif do projeto" width=80%>
+<img src="./src/assets/screenshots/theme-toggler-button.gif" alt="theme toggler button" title="Gif do projeto" width=80%>
 
 ### 5. Procurando pokémons pelo nome e pelo tipo
 
@@ -212,15 +212,15 @@ Foi criado duas maneiras de procurarmos os nossos pokémons preferidos através 
 }
 ```
 
-<img src="./src/screenshots/searching-pokemons.gif" alt="Procurando mais pokemons" title="Gif do projeto" width=80%>
+<img src="./src/assets/screenshots/searching-pokemons.gif" alt="Procurando mais pokemons" title="Gif do projeto" width=80%>
 
 Algumas outras funcionalidades foram adicionadas ao projeto para melhorar a experiência do usuário, mesmo que não seja um pré-requisito do execício solicitado pelo [DevQuest](https://www.linkedin.com/school/devquest-dev-em-dobro/about/), como visualizar as versões shiny e female de alguns pokémons, além de inverter usa imagem, para visualizá-lo em 360°.
 
-<img src="./src/screenshots/pokemon-images.gif" alt="Imagens do pokémon" title="Gif do projeto" width=40%>
+<img src="./src/assets/screenshots/pokemon-images.gif" alt="Imagens do pokémon" title="Gif do projeto" width=40%>
 
 Por fim, o projeto foi criado para ser responsivo em todos os dispositivos dos usuários.
 
-<img src="./src/screenshots/project-responsivity.gif" alt="Responsividade do projeto" title="Gif do projeto" width=80%>
+<img src="./src/assets/screenshots/project-responsivity.gif" alt="Responsividade do projeto" title="Gif do projeto" width=80%>
 
 ### Como executar o projeto
 - O projeto foi realizado através do [React-Vite](https://vitejs.dev).
@@ -231,15 +231,15 @@ Por fim, o projeto foi criado para ser responsivo em todos os dispositivos dos u
 
 - Para rodar o projeto no navegador é necessário ativar o **NPM Scripts** nos três pontos ao lado do EXPLORER do VSCODE
 
-<img src='./src/screenshots/Instruções-passo-1.bmp' alt="instruções passo 1">
+<img src='./src/assets/screenshots/Instruções-passo-1.bmp' alt="instruções passo 1">
 
 - Em seguida, na janela inferior esquerda do **NPM SCRIPTS** clicar no botão **run** do package.json/dev vite
 
-<img src='./src/screenshots/Instruções-passo-2.bmp' alt="instruções passo 2">
+<img src='./src/assets/screenshots/Instruções-passo-2.bmp' alt="instruções passo 2">
 
 - Por fim, no terminal irá aparecer o **local-host** que será executado no seu navegador o projeto. Passe o mouse sobre ele e clique em **Follow link** ou pressione o botão **ctrl** do seu teclado e clique em cima do **local-host** e a página abrirá no seu navegador padrão.
 
-<img src='./src/screenshots/Instruções-passo-3.bmp' alt="instruções passo 3">
+<img src='./src/assets/screenshots/Instruções-passo-3.bmp' alt="instruções passo 3">
 
 Há outras formas de se abrir o projeto, porém esta é a forma que eu costumo optar em usar.
 

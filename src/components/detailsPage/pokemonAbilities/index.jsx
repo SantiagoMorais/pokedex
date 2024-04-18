@@ -2,23 +2,22 @@ import { useContext, useEffect, useState } from "react";
 import { fetchPokemonData } from "../../../services/fetchPokemonData"
 import styled from "styled-components";
 import { ThemeContext } from "../../../contexts/themeContext";
-import { useParams } from "react-router-dom";
-import { typesData } from "../../homePage/pokemonTypes";
+import PropTypes from "prop-types"
+import { typesData } from "../../homePage/pokemonTypes/typesData";
 
 export const PokemonAbilities = ({ url, pokemon }) => {
     const [ability, setAbility] = useState(null)
     const { theme } = useContext(ThemeContext)
-    const { id } = useParams()
     const pokemonTypeColor = typesData.find((typeData) => typeData.type === pokemon?.types[0].type.name)?.color;
 
-    const getPokemonAbilities = async () => {
-        const { data } = await fetchPokemonData('', url);
-        setAbility(data)
-    }
-
     useEffect(() => {
+        const getPokemonAbilities = async () => {
+            const { data } = await fetchPokemonData('', url);
+            setAbility(data)
+        }
+
         getPokemonAbilities();
-    }, [ability])
+    }, [ability, url])
 
     return (
         <Container style={{ color: theme.color }}>
@@ -35,6 +34,11 @@ export const PokemonAbilities = ({ url, pokemon }) => {
             }
         </Container>
     )
+}
+
+PokemonAbilities.propTypes = {
+    url: PropTypes.string,
+    pokemon: PropTypes.object
 }
 
 const Container = styled.div`

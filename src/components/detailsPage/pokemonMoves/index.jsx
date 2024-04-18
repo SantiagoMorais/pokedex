@@ -2,26 +2,23 @@ import { useContext, useEffect, useState } from "react";
 import { fetchPokemonData } from "../../../services/fetchPokemonData"
 import styled from "styled-components";
 import { ThemeContext } from "../../../contexts/themeContext";
-import { useParams } from "react-router-dom";
-import { typesData } from "../../homePage/pokemonTypes";
+import PropTypes from "prop-types"
+import { typesData } from "../../homePage/pokemonTypes/typesData";
 
 export const PokemonMoves = ({ url, pokemon }) => {
     const [move, setMove] = useState(null)
     const { theme } = useContext(ThemeContext);
     const textDescription = move !== null ? move.flavor_text_entries.find(language => language.language.name === 'en')?.flavor_text : ""
-    const { id } = useParams()
     const pokemonTypeColor = typesData.find((typeData) => typeData.type === pokemon?.types[0].type.name)?.color;
 
-
-    const getPokemonMoves = async () => {
-
-        const { data } = await fetchPokemonData('', url);
-        setMove(data)
-    }
-
     useEffect(() => {
+        const getPokemonMoves = async () => {
+            const { data } = await fetchPokemonData('', url);
+            setMove(data)
+        }
+
         getPokemonMoves();
-    }, [move])
+    }, [move, url])
 
     return (
         <Container style={{ color: theme.color }}>
@@ -38,6 +35,11 @@ export const PokemonMoves = ({ url, pokemon }) => {
             }
         </Container>
     )
+}
+
+PokemonMoves.propTypes = {
+    url: PropTypes.string,
+    pokemon: PropTypes.object
 }
 
 const Container = styled.div`

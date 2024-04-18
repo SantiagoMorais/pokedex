@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import pokemonLogo from "../../images/pokemon-logo.png"
+import pokemonLogo from "../../assets/pokemon-logo.png"
 import { useContext } from "react"
 import { ThemeContext } from "../../contexts/themeContext"
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons"

@@ -1,16 +1,17 @@
 import styled from "styled-components"
-import pokeballBackgroundIcon from '../../../images/pokeball-background-icon.png'
+import pokeballBackgroundIcon from '../../../assets/pokeball-background-icon.png'
 import { useContext } from "react"
 import { ThemeContext } from "../../../contexts/themeContext"
-import { typesData } from "../../homePage/pokemonTypes"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBolt, faGem, faTree } from "@fortawesome/free-solid-svg-icons"
+import PropTypes from "prop-types"
+import { typesData } from "../../homePage/pokemonTypes/typesData"
 
 export const Measures = ({ pokemon, speciesData }) => {
     const { theme } = useContext(ThemeContext)
 
     return (
-        <Container style={{backgroundColor: theme.secondaryColor}}>
+        <Container style={{ backgroundColor: theme.secondaryColor }}>
             <img
                 className="backgroundPokeball"
                 src={pokeballBackgroundIcon}
@@ -62,6 +63,11 @@ export const Measures = ({ pokemon, speciesData }) => {
             </ul>
         </Container>
     )
+}
+
+Measures.propTypes = {
+    pokemon: PropTypes.object,
+    speciesData: PropTypes.object
 }
 
 const Container = styled.div`

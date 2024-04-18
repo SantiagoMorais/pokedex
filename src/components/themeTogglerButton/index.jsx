@@ -1,11 +1,13 @@
 import { useContext } from "react"
-import { ThemeContext, themes } from "../../contexts/themeContext"
+import { ThemeContext } from "../../contexts/themeContext"
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMoon, faSun } from "@fortawesome/free-regular-svg-icons"
+import { themes } from "../../contexts/themes"
 
 export const ThemeTogglerButton = () => {
     const { theme, setTheme } = useContext(ThemeContext)
+    
     const changeTheme = () => {
         theme.color === themes.light.color ? setTheme(themes.dark) : setTheme(themes.light);
     }

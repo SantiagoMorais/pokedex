@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import pokemonLogo from "../../../images/pokemon-logo.png"
+import pokemonLogo from "../../../assets/pokemon-logo.png"
 import { useContext, useEffect, useState } from "react"
 import { ThemeContext } from "../../../contexts/themeContext"
 import { PokemonTypes } from "../pokemonTypes"
@@ -11,7 +11,7 @@ import { PokemonListsContext } from "../../../contexts/pokemonListsContext"
 export const NavBar = () => {
     const { theme } = useContext(ThemeContext)
     const [searchField, setSearchField] = useState('')
-    const {setSearchedPokemon, searchedPokemon} = useContext(PokemonListsContext)
+    const { setSearchedPokemon, searchedPokemon } = useContext(PokemonListsContext)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -25,14 +25,14 @@ export const NavBar = () => {
 
     useEffect(() => {
         setSearchedPokemon(searchField)
-    }, [searchedPokemon])
+    }, [searchedPokemon, setSearchedPokemon, searchField])
 
     return (
-        <Container style={{ color: theme.color }}>      
+        <Container style={{ color: theme.color }}>
             <img
                 src={pokemonLogo}
                 alt="pokemonLogo"
-                style={{filter: theme.logoColor }}
+                style={{ filter: theme.logoColor }}
                 className="pokemonLogo"
             />
             <div className="search">
@@ -50,7 +50,7 @@ export const NavBar = () => {
                         <button
                             type="submit"
                             className="submitButton"
-                            style={{color: theme.color, backgroundColor: theme.secondaryColor}}
+                            style={{ color: theme.color, backgroundColor: theme.secondaryColor }}
                         >
                             <FontAwesomeIcon className="searchIcon" icon={faCaretRight} />
                         </button>
@@ -58,7 +58,7 @@ export const NavBar = () => {
                 </div>
 
                 <div className="searchByType">
-                    <p className="pokemonTypeLabel">Find it by it's type:</p>
+                    <p className="pokemonTypeLabel">Find it by its type:</p>
                     <div className="pokemonType">
                         <div
                             className="window"
@@ -135,7 +135,6 @@ const Container = styled.section`
                 text-align: center;
                 border-radius: 8px 0 0 8px;
                 background: none;
-                fit-content;
                 width: 100%;
             }
 
@@ -207,6 +206,8 @@ const Container = styled.section`
             .pokemonType {
                 .window {
                     padding-top: 9px;
+                }
+            }
         }
     }
 `

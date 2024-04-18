@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { fetchPokemonData } from "../../../services/fetchPokemonData";
 import { ThemeContext } from "../../../contexts/themeContext";
 import { Link, useParams } from "react-router-dom";
-import { typesData } from "../../homePage/pokemonTypes";
 import { PokemonImage } from "../pokemonImage";
 import { fetchPokemonBySpecie } from "../../../services/fetchPokemonBySpecie";
 import { Measures } from "../measures";
 import { ChangePokemonPage } from "../changePokemonPage";
+import { typesData } from "../../homePage/pokemonTypes/typesData";
 
 export const PokemonPanel = () => {
     const { theme } = useContext(ThemeContext)
@@ -21,28 +21,28 @@ export const PokemonPanel = () => {
 
     const pokemonTypeColor = typesData.find((typeData) => typeData.type === pokemon?.types[0].type.name)?.color;
 
-    const getPokemon = async () => {
-        const { data } = await fetchPokemonData(id);
-        setLastPokemon(false);
-        setPokemon(data);
-        setListImages(data.sprites)
-        setCurrentImage(data.sprites.front_default)
-    }
-
-    const getSpeciesData = async () => {
-        setLastPokemon(false);
-        await fetchPokemonBySpecie(id)
-            .then((res) => {
-                const englishDescription = res.flavor_text_entries.find(en => en.language.name === 'en')?.flavor_text
-                setPokemonDescription(englishDescription)
-                setSpeciesData(res);
-            })
-            .catch(() => {
-                setLastPokemon(true);
-            })
-    }
-
     useEffect(() => {
+        const getPokemon = async () => {
+            const { data } = await fetchPokemonData(id);
+            setLastPokemon(false);
+            setPokemon(data);
+            setListImages(data.sprites)
+            setCurrentImage(data.sprites.front_default)
+        }
+    
+        const getSpeciesData = async () => {
+            setLastPokemon(false);
+            await fetchPokemonBySpecie(id)
+                .then((res) => {
+                    const englishDescription = res.flavor_text_entries.find(en => en.language.name === 'en')?.flavor_text
+                    setPokemonDescription(englishDescription)
+                    setSpeciesData(res);
+                })
+                .catch(() => {
+                    setLastPokemon(true);
+                })
+        }
+        
         getPokemon();
         getSpeciesData();
     }, [id])

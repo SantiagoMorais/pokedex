@@ -4,7 +4,7 @@ import { useContext } from "react"
 import { ThemeContext } from "../../../contexts/themeContext"
 import { Lists } from "../lists"
 import { Footer } from "../../footer"
-import backgroundPokeballs from '../../../images/background-pokeballs.png'
+import backgroundPokeballs from '../../../assets/background-pokeballs.png'
 
 
 export const Home = () => {
@@ -13,7 +13,7 @@ export const Home = () => {
     return (
         <>
             <Container style={{ backgroundColor: theme.secondaryColor }}>
-                <div className="backgroundImage" style={{filter: theme.logoColor}}></div>
+                <div className="backgroundImage" style={{ filter: theme.logoColor }}></div>
                 <NavBar />
                 <Lists />
             </Container>

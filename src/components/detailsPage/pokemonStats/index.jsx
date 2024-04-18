@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import { ThemeContext } from "../../../contexts/themeContext"
-import { Chart as Chart } from "chart.js/auto" //Do not remove this one
+// eslint-disable-next-line
+import { Chart as _ } from "chart.js/auto"; //Do not remove this one
 import { Radar } from "react-chartjs-2"
-import { typesData } from "../../homePage/pokemonTypes"
 import { useParams } from "react-router-dom"
 import { fetchPokemonData } from "../../../services/fetchPokemonData"
+import { typesData } from "../../homePage/pokemonTypes/typesData";
 
 export const PokemonStats = () => {
     const { theme } = useContext(ThemeContext)
@@ -14,20 +15,20 @@ export const PokemonStats = () => {
     const [pokemonStats, setPokemonStats] = useState(null)
     const { id } = useParams();
 
-    const getPokemon = async () => {
-        const { data } = await fetchPokemonData(id);
-        setPokemon(data)
-        const baseStat = data.stats.map(stat => stat.base_stat)
-
-        const statLabels = data.stats.map(stat => {
-            // setting the first letter of every stat to upper case
-            return stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1);
-        })
-
-        setPokemonStats({ baseStat, statLabels })
-    }
-
     useEffect(() => {
+        const getPokemon = async () => {
+            const { data } = await fetchPokemonData(id);
+            setPokemon(data)
+            const baseStat = data.stats.map(stat => stat.base_stat)
+    
+            const statLabels = data.stats.map(stat => {
+                // setting the first letter of every stat to upper case
+                return stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1);
+            })
+    
+            setPokemonStats({ baseStat, statLabels })
+        }
+
         getPokemon();
     }, [id])
 
@@ -120,7 +121,7 @@ const Container = styled.div`
         display: flex;
         flex-direction: column;
         gap: 15px;
-        glex-wrap: wrap;
+        flex-wrap: wrap;
 
         .stats {
             border: 1px solid;

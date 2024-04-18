@@ -1,5 +1,5 @@
 import { ThemeTogglerButton } from "../../themeTogglerButton"
-import pokemonLogo from "../../../images/pokemon-logo.png"
+import pokemonLogo from "../../../assets/pokemon-logo.png"
 import { useContext } from "react"
 import { ThemeContext } from "../../../contexts/themeContext"
 import styled from "styled-components"

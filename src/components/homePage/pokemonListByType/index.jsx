@@ -5,7 +5,7 @@ import { PokemonListsContext } from "../../../contexts/pokemonListsContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUndoAlt } from "@fortawesome/free-solid-svg-icons"
 import { ThemeContext } from "../../../contexts/themeContext"
-import { typesData } from "../pokemonTypes"
+import { typesData } from "../pokemonTypes/typesData"
 
 export const PokemonListByType = () => {
     const { typeList, setTypeList, setCurrentType, currentType } = useContext(PokemonListsContext)

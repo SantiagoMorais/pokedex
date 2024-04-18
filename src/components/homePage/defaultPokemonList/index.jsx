@@ -15,23 +15,6 @@ export const DefaultPokemonList = () => {
     const [isLoading, setIsLoading] = useState(false);
     const { theme } = useContext(ThemeContext)
 
-    const getPokemons = async () => {
-        const response = await fetchPokemonList(listSize, offset);
-        const newPokemons = response.results;
-
-        //The code below checks if the getPokemons function is being called twice, to avoid duplicate Pokémon state data.
-        setDefaultList(prevPokemons => {
-            const updatedPokemons = [...prevPokemons];
-            newPokemons.forEach(newPokemon => {
-                !updatedPokemons.some(pokemon => pokemon.url === newPokemon.url)
-                    ? updatedPokemons.push(newPokemon)
-                    : ''
-            });
-            return updatedPokemons;
-        });
-        setIsLoading(false);
-    }
-
     const loadMorePokemons = async (pokemonsNumber) => {
         setOffset(defaultList.length);
         setListSize(pokemonsNumber);
@@ -39,8 +22,24 @@ export const DefaultPokemonList = () => {
     }
 
     useEffect(() => {
+        const getPokemons = async () => {
+            const response = await fetchPokemonList(listSize, offset);
+            const newPokemons = response.results;
+    
+            //The code below checks if the getPokemons function is being called twice, to avoid duplicate Pokémon state data.
+            setDefaultList(prevPokemons => {
+                const updatedPokemons = [...prevPokemons];
+                newPokemons.forEach(newPokemon => {
+                    !updatedPokemons.some(pokemon => pokemon.url === newPokemon.url)
+                        ? updatedPokemons.push(newPokemon)
+                        : ''
+                });
+                return updatedPokemons;
+            });
+            setIsLoading(false);
+        }
         getPokemons();
-    }, [offset])
+    }, [offset, setDefaultList, listSize])
 
     return (
         <Container>

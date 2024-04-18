@@ -3,32 +3,33 @@ import styled from "styled-components"
 import { ThemeContext } from "../../../contexts/themeContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass, faPlus, faSpinner } from "@fortawesome/free-solid-svg-icons"
-import { typesData } from "../pokemonTypes"
-import pokeballIcon from "../../../images/pokeball-icon.png"
+import pokeballIcon from "../../../assets/pokeball-icon.png"
 import { Link } from "react-router-dom"
 import { fetchPokemonData } from "../../../services/fetchPokemonData"
+import PropTypes from "prop-types"
+import { typesData } from "../pokemonTypes/typesData"
 
-export const PokemonCard = (props) => {
+export const PokemonCard = ({ pokemonData, pokemonName, pokemonUrl }) => {
     const { theme } = useContext(ThemeContext);
     const [pokemon, setPokemon] = useState(null);
     const [isHovered, setIsHovered] = useState(false)
     const cardColor = typesData.find((typeData) => typeData.type === pokemon?.types[0].type.name)?.color;
 
-    const getPokemonData = async () => {
-        if (props.pokemonUrl) {
-            const { data } = await fetchPokemonData('', props.pokemonUrl);
-            setPokemon(data);
-        } else if (props.pokemonName) {
-            const { data } = await fetchPokemonData(props.pokemonName);
-            setPokemon(data)
-        } else if (props.pokemonData) {
-            setPokemon(props.pokemonData);
-        }
-    }
-
     useEffect(() => {
+        const getPokemonData = async () => {
+            if (pokemonUrl) {
+                const { data } = await fetchPokemonData('', pokemonUrl);
+                setPokemon(data);
+            } else if (pokemonName) {
+                const { data } = await fetchPokemonData(pokemonName);
+                setPokemon(data)
+            } else if (pokemonData) {
+                setPokemon(pokemonData);
+            }
+        }
+
         getPokemonData();
-    }, [])
+    }, [pokemonData, pokemonName, pokemonUrl])
 
     const hoverStyle = {
         boxShadow: `0 0 15px ${cardColor}`
@@ -74,7 +75,7 @@ export const PokemonCard = (props) => {
                 <div className="measures">
                     <div className="height">
                         <p>Height:</p>
-                        <p>{pokemon?.height? pokemon.height / 10 + 'm': <FontAwesomeIcon icon={faSpinner} spin />}</p>
+                        <p>{pokemon?.height ? pokemon.height / 10 + 'm' : <FontAwesomeIcon icon={faSpinner} spin />}</p>
                     </div>
                     <div className="weight">
                         <p>Weight:</p>
@@ -94,6 +95,12 @@ export const PokemonCard = (props) => {
             </Container>
         </Link>
     )
+}
+
+PokemonCard.propTypes = {
+    pokemonUrl: PropTypes.string,
+    pokemonName: PropTypes.string,
+    pokemonData: PropTypes.object
 }
 
 const Container = styled.div`

@@ -1,34 +1,10 @@
 import { createContext, useEffect, useState } from "react"
-import darkIcon from "../images/lunatoneIcon.png"
-import lightIcon from "../images/solrockIcon.png"
-
-export const themes = {
-    light: {
-        color: "#000000",
-        secondaryColor: "#eeeeee",
-        icon: lightIcon,
-        logoColor: "invert(0%)",
-        themeTogglerButtonStyle: {
-            left: "0px"
-        },
-        footerColor: "#B6BBC4",
-    },
-    dark: {
-        color: "#eeeeee",
-        secondaryColor: "#000000",
-        icon: darkIcon,
-        logoColor: "invert(100%)",
-        themeTogglerButtonStyle: {
-            left: "-25px", 
-            transform: "scaleX(-1)",
-        },
-        footerColor: "#040D12",
-    }
-}
+import PropTypes from 'prop-types';
+import { themes } from "./themes";
 
 export const ThemeContext = createContext({});
 
-export const ThemeProvider = (props) => {
+export const ThemeProvider = ({children}) => {
     const themeLocal = JSON.parse(localStorage.getItem('themeKey'));
     const themeStorage = themeLocal ? themeLocal : themes.light;
 
@@ -40,8 +16,11 @@ export const ThemeProvider = (props) => {
 
     return (
         <ThemeContext.Provider value={{theme, setTheme}}>
-            {props.children}
+            {children}
         </ThemeContext.Provider>
     )
 }
 
+ThemeProvider.propTypes = {
+    children: PropTypes.node
+}

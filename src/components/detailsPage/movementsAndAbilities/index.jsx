@@ -11,14 +11,14 @@ export const MovementsAndAbilities = () => {
     const [abilities, setAbilities] = useState([]);
     const [pokemon, setPokemon] = useState([]);
 
-    const getPokemonAbilities = async () => {
-        const { data } = await fetchPokemonData(id);
-        setPokemon(data);
-        setMoves(data.moves);
-        setAbilities(data.abilities);
-    }
-
     useEffect(() => {
+        const getPokemonAbilities = async () => {
+            const { data } = await fetchPokemonData(id);
+            setPokemon(data);
+            setMoves(data.moves);
+            setAbilities(data.abilities);
+        }
+
         getPokemonAbilities();
     }, [id])
 

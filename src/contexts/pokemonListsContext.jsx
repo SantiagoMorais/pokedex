@@ -1,8 +1,9 @@
 import { createContext, useState } from "react"
+import PropTypes from 'prop-types';
 
 export const PokemonListsContext = createContext({});
 
-export const PokemonListsProvider = (props) => {
+export const PokemonListsProvider = ({children}) => {
     const [typeList, setTypeList] = useState([])
     const [currentType, setCurrentType] = useState('');
     const [defaultList, setDefaultList] = useState([]);
@@ -20,7 +21,11 @@ export const PokemonListsProvider = (props) => {
                 searchedPokemon,
                 setSearchedPokemon
             }}>
-            {props.children}
+            {children}
         </PokemonListsContext.Provider>
     )
+}
+
+PokemonListsProvider.propTypes = {
+    children: PropTypes.node
 }

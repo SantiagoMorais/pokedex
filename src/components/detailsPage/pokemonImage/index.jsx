@@ -1,9 +1,10 @@
 import { faStar, faSyncAlt, faVenusMars } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import styled from "styled-components"
-import pokeballBackgroundIcon from '../../../images/pokeball-background-icon.png'
+import pokeballBackgroundIcon from '../../../assets/pokeball-background-icon.png'
 import { useContext } from "react"
 import { ThemeContext } from "../../../contexts/themeContext"
+import PropTypes from "prop-types"
 
 export const PokemonImage = ({ listImages, pokemon, currentImage, setCurrentImage }) => {
     const { theme } = useContext(ThemeContext)
@@ -31,7 +32,7 @@ export const PokemonImage = ({ listImages, pokemon, currentImage, setCurrentImag
                 currentImage === listImages.front_shiny_female
                     ? listImages.back_shiny_female
                     : listImages.front_shiny_female);
-        };
+        }
     }
 
     const changeGender = () => {
@@ -85,9 +86,9 @@ export const PokemonImage = ({ listImages, pokemon, currentImage, setCurrentImag
                     : listImages.back_female);
         }
     }
-    
+
     return (
-        <Container style={{backgroundColor: theme.secondaryColor}}>
+        <Container style={{ backgroundColor: theme.secondaryColor }}>
             {currentImage &&
                 <>
                     <img
@@ -99,8 +100,8 @@ export const PokemonImage = ({ listImages, pokemon, currentImage, setCurrentImag
                     <img
                         className="pokemonImage"
                         src={currentImage}
-                        alt={`Pokemon ${pokemon.name}`} 
-                        />
+                        alt={`Pokemon ${pokemon.name}`}
+                    />
                     <div className="buttons">
                         {listImages?.front_female !== null &&
                             <button onClick={() => { changeGender() }} title="Gender" style={{ color: theme.color, backgroundColor: "#59D5E0" }}>
@@ -122,6 +123,13 @@ export const PokemonImage = ({ listImages, pokemon, currentImage, setCurrentImag
             }
         </Container>
     )
+}
+
+PokemonImage.propTypes = {
+    listImages: PropTypes.object,
+    pokemon: PropTypes.object,
+    currentImage: PropTypes.string,
+    setCurrentImage: PropTypes.func.isRequired
 }
 
 const Container = styled.div`

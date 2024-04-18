@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { typesData } from "../../homePage/pokemonTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { useContext } from "react";
 import { ThemeContext } from "../../../contexts/themeContext";
+import PropTypes from "prop-types"
+import { typesData } from "../../homePage/pokemonTypes/typesData";
 
 export const ChangePokemonPage = ({ pokemon }) => {
     const { theme } = useContext(ThemeContext)
@@ -52,6 +53,10 @@ export const ChangePokemonPage = ({ pokemon }) => {
             </Link>
         </Container>
     )
+}
+
+ChangePokemonPage.propTypes = {
+    pokemon: PropTypes.object
 }
 
 const Container = styled.div`

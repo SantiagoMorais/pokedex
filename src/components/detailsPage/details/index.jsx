@@ -7,7 +7,7 @@ import { Footer } from "../../footer";
 import { PokemonStats } from "../pokemonStats";
 import { PokemonEvolution } from "../pokemonEvolution";
 import { PokemonPanel } from "../pokemonPanel";
-import backgroundPokeballs from '../../../images/background-pokeballs.png'
+import backgroundPokeballs from '../../../assets/background-pokeballs.png'
 import { MovementsAndAbilities } from "../movementsAndAbilities";
 
 export const Details = () => {

@@ -3,6 +3,7 @@ import { ThemeContext } from "../../../contexts/themeContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPaw, faPlus } from "@fortawesome/free-solid-svg-icons"
 import styled from "styled-components"
+import PropTypes from 'prop-types';
 
 export const ShowMoreButtons = (props) => {
     const { theme } = useContext(ThemeContext)
@@ -57,6 +58,12 @@ export const ShowMoreButtons = (props) => {
             </Container>
         </>
     )
+}
+
+ShowMoreButtons.propTypes ={
+    showMore10: PropTypes.func,
+    showMore20: PropTypes.func,
+    showMore50: PropTypes.func
 }
 
 const Container = styled.div`

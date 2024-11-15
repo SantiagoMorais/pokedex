@@ -1,4 +1,4 @@
-import { createContext, useState } from "react"
+import { createContext, useState, useContext } from "react"
 import PropTypes from 'prop-types';
 
 export const PokemonListsContext = createContext({});
@@ -28,4 +28,12 @@ export const PokemonListsProvider = ({children}) => {
 
 PokemonListsProvider.propTypes = {
     children: PropTypes.node
+}
+
+export const usePokemonLists = () => {
+    const context = useContext(PokemonListsContext);
+
+    if (!context) throw new Error("usePokemonLists must be wrapped by PokemonListsProvider")
+
+    return context
 }
